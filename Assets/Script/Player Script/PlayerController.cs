@@ -16,6 +16,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private float bulletSpeed;
 
+    [Header("Move Area")]
+    [SerializeField] private float xRange;
+    [SerializeField] private float yRange;
+
     private Vector2 moveDir;
     private Vector2 worldMousePosition;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -61,6 +65,11 @@ public class PlayerController : MonoBehaviour
 
         Vector2 mousePosition = inputSystem.UI.Point.ReadValue<Vector2>();
         worldMousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+
+        float xPosition = Mathf.Clamp(transform.position.x, -xRange, xRange);
+        float yPosition = Mathf.Clamp(transform.position.y, -yRange, yRange);
+
+        transform.position = new Vector2(xPosition, yPosition);
     }
 
     private void FixedUpdate()
