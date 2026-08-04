@@ -45,6 +45,8 @@ public class PlayerController : MonoBehaviour
         GameObject bullet = Instantiate(bulletPrefab, spawnPoint.position, spawnPoint.rotation);
         bullet.GetComponent<BulletScript>().ShootBullet(bulletSpeed);
 
+        SoundManager.instance.PlaySound(0);
+
         Destroy(bullet, 3f);
     }
 

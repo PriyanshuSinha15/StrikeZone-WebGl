@@ -85,6 +85,9 @@ public class EnemyController : MonoBehaviour
     {
         if (collision.gameObject.GetComponent<BulletScript>())
         {
+            GameController.instance.playerScore++;
+            UIManager.instance.IncreaseScoreCount();
+            SoundManager.instance.PlaySound(1);
             Destroy(collision.gameObject);
             Destroy(gameObject);
         }
