@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -62,19 +63,33 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        GameInput();
+        RestrictPlayerPosition(); 
+    }
+
+    private void FixedUpdate()
+    {
+        MoveAndRotatePlayer();
+    }
+
+    private void GameInput()
+    {
         moveDir = inputSystem.Player.Move.ReadValue<Vector2>();
         moveDir.Normalize();
 
         Vector2 mousePosition = inputSystem.UI.Point.ReadValue<Vector2>();
         worldMousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+    }
 
+    private void RestrictPlayerPosition()
+    {
         float xPosition = Mathf.Clamp(transform.position.x, -xRange, xRange);
         float yPosition = Mathf.Clamp(transform.position.y, -yRange, yRange);
 
         transform.position = new Vector2(xPosition, yPosition);
     }
 
-    private void FixedUpdate()
+    private void MoveAndRotatePlayer()
     {
         rb.linearVelocity = moveDir * speed;
 

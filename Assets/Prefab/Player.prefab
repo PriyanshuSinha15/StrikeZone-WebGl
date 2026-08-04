@@ -192,6 +192,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5523601021650812577}
+  - component: {fileID: 4545256349698435727}
   - component: {fileID: 1731366832452445707}
   - component: {fileID: 8269456624347558963}
   - component: {fileID: 2557050693834869396}
@@ -219,6 +220,20 @@ Transform:
   - {fileID: 8387309885902264729}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4545256349698435727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4598706984153253603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d791fdfe4c33d749850fb3e9f64f492, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
+  totalHealth: 100
+  currentHealth: 0
 --- !u!114 &1731366832452445707
 MonoBehaviour:
   m_ObjectHideFlags: 0
