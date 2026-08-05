@@ -26,6 +26,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button pauseButton;
     [SerializeField] private Button resumeButton;
 
+    [Header("HealthBar")]
+    [SerializeField] private Gradient healthBarColor;
+
     
     void Awake()
     {
@@ -76,6 +79,8 @@ public class UIManager : MonoBehaviour
 
         scoreText.text = GameController.instance.playerScore.ToString();
         SetPlayerHealth(PlayerHealth.instance.GetPlayerHealthRatio());
+        playerHealthImage.color = healthBarColor.Evaluate(1);
+        
     }
 
     // Update is called once per frame
@@ -92,6 +97,7 @@ public class UIManager : MonoBehaviour
     public void SetPlayerHealth(float fillAmount)
     {
         playerHealthImage.fillAmount = fillAmount;
+        playerHealthImage.color = healthBarColor.Evaluate(fillAmount);
     }
 
     void ToggleGameOverScreen(bool mode)
