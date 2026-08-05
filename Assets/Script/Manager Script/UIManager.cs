@@ -74,8 +74,8 @@ public class UIManager : MonoBehaviour
         pauseUI.SetActive(false);
 
 
-        scoreText.text = "Score : " + GameController.instance.playerScore;
-        playerHealthImage.fillAmount = 1;
+        scoreText.text = GameController.instance.playerScore.ToString();
+        SetPlayerHealth(PlayerHealth.instance.GetPlayerHealthRatio());
     }
 
     // Update is called once per frame
@@ -86,7 +86,7 @@ public class UIManager : MonoBehaviour
 
     public void IncreaseScoreCount()
     {
-        scoreText.text = "Score : " + GameController.instance.playerScore;
+        scoreText.text = GameController.instance.playerScore.ToString();
     }
 
     public void SetPlayerHealth(float fillAmount)
@@ -108,7 +108,7 @@ public class UIManager : MonoBehaviour
     {
         gameUI.SetActive(false);
         pauseUI.SetActive(true);
-        pauseScoreText.text = "Score : " + GameController.instance.playerScore;
+        pauseScoreText.text = "SCORE : " + GameController.instance.playerScore;
         Time.timeScale = 0f;
     } 
 
@@ -130,7 +130,7 @@ public class UIManager : MonoBehaviour
     public void OnPlayerDied()
     {
         ToggleGameOverScreen(true);
-        gameOverScoreText.text = "Score : " + GameController.instance.playerScore;
+        gameOverScoreText.text = "SCORE : " + GameController.instance.playerScore;
         Debug.Log("Player ki hatya ho gyi hai");
     }
 }
