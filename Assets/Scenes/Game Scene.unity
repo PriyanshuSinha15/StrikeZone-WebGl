@@ -1088,7 +1088,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &731664630
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2921,6 +2921,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2161598178146238480, guid: 7a73b871c6103f64790206cd9ffad1eb, type: 3}
+      propertyPath: m_Size.y
+      value: 0.39248335
+      objectReference: {fileID: 0}
+    - target: {fileID: 2161598178146238480, guid: 7a73b871c6103f64790206cd9ffad1eb, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.46551436
+      objectReference: {fileID: 0}
     - target: {fileID: 4598706984153253603, guid: 7a73b871c6103f64790206cd9ffad1eb, type: 3}
       propertyPath: m_Name
       value: Player
