@@ -1,5 +1,7 @@
 using System;
+using Terresquall;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -8,6 +10,13 @@ public class PlayerController : MonoBehaviour
     private InputSystem_Actions inputSystem;
 
     private Rigidbody2D rb;
+
+    [Header("Joystick")]
+    [SerializeField] private VirtualJoystick movementJoystick;
+    [SerializeField] private VirtualJoystick rotationJoystick;
+
+    [Header("Button")]
+    [SerializeField] private Button shootButton;
 
     [Header("Player Abilities")]
     [SerializeField] private float speed;
@@ -40,10 +49,20 @@ public class PlayerController : MonoBehaviour
     private void OnEnable()
     {
         inputSystem.Enable();
-        inputSystem.Player.Attack.performed += Attack_performed;
+        //inputSystem.Player.Attack.performed += Attack_performed;
     }
 
-    private void Attack_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    //private void Attack_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    //{
+    //    GameObject bullet = Instantiate(bulletPrefab, spawnPoint.position, spawnPoint.rotation);
+    //    bullet.GetComponent<BulletScript>().ShootBullet(bulletSpeed);
+
+    //    SoundManager.instance.PlaySound(0);
+
+    //    Destroy(bullet, 3f);
+    //}
+
+    private void ShootBullet()
     {
         GameObject bullet = Instantiate(bulletPrefab, spawnPoint.position, spawnPoint.rotation);
         bullet.GetComponent<BulletScript>().ShootBullet(bulletSpeed);
@@ -59,7 +78,7 @@ public class PlayerController : MonoBehaviour
     }
     void Start()
     {
-        
+        shootButton.onClick.AddListener(() => ShootBullet());
     }
 
     // Update is called once per frame
@@ -76,11 +95,14 @@ public class PlayerController : MonoBehaviour
 
     private void GameInput()
     {
-        moveDir = inputSystem.Player.Move.ReadValue<Vector2>();
+        //moveDir = inputSystem.Player.Move.ReadValue<Vector2>();
+
+        moveDir.x = movementJoystick.GetAxis("Horizontal");
+        moveDir.y = movementJoystick.GetAxis("Vertical");
         moveDir.Normalize();
 
-        Vector2 mousePosition = inputSystem.UI.Point.ReadValue<Vector2>();
-        worldMousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+        //Vector2 mousePosition = inputSystem.UI.Point.ReadValue<Vector2>();
+        //worldMousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
     }
 
     private void RestrictPlayerPosition()
@@ -95,8 +117,14 @@ public class PlayerController : MonoBehaviour
     {
         rb.linearVelocity = moveDir * speed;
 
-        Vector2 lookDir = worldMousePosition - rb.position;
-        float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;
-        rb.rotation = angle;
+        //Vector2 lookDir = worldMousePosition - rb.position;
+        Vector2 lookDir = new Vector2(rotationJoystick.GetAxis("Horizontal"), rotationJoystick.GetAxis("Vertical"));
+        lookDir.Normalize();
+
+        if(lookDir.sqrMagnitude > 0.01)
+        {
+            float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;
+            rb.rotation = angle;
+        }
     }
 }
