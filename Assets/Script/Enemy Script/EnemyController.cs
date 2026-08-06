@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public enum EnemyState
 {
@@ -93,7 +94,11 @@ public class EnemyController : MonoBehaviour
         if (collision.gameObject.GetComponent<BulletScript>())
         {
             GameController.instance.playerScore++;
-            GameplayUIManager.instance.IncreaseScoreCount();
+
+            //PlayVlay Score Report
+            PlayVlayBridge.ReportScore(GameController.instance.playerScore);
+
+            GameplayUIManager.instance.SetScoreCount();
             SoundManager.instance.PlaySound(1);
             GameObject explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
             Destroy(explosion, 1.2f);

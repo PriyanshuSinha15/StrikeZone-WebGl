@@ -321,6 +321,51 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &126079289
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 126079291}
+  - component: {fileID: 126079290}
+  m_Layer: 0
+  m_Name: PlayVlayReceiver
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &126079290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 126079289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ac107e5c54125c448e9c7f18c10cc39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayVlayReciever
+  gameController: {fileID: 0}
+--- !u!4 &126079291
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 126079289}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &171798600
 GameObject:
   m_ObjectHideFlags: 0
@@ -777,6 +822,7 @@ MonoBehaviour:
   enemyPrefab: {fileID: 6057371738527766088, guid: 44ad7098184e1ef448ab777424cd731c, type: 3}
   enemyList: []
   spawnTime: 0
+  totalTime: 0
 --- !u!1 &544126955 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4598706984153253603, guid: 7a73b871c6103f64790206cd9ffad1eb, type: 3}
@@ -1043,7 +1089,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &731664630
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2334,12 +2380,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 429c0acd5167a0f468dc81357b1d7417, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameController
+  startGame: 0
+  resetGame: 0
+  pauseGame: 0
+  resumeGame: 0
   playerScore: 0
   gameOver: 0
   playGame: 0
   player: {fileID: 544126955}
   playerSpawnPoint: {fileID: 100362644}
+  enemySpawner: {fileID: 509985709}
   playerBulletList: []
+  enemyBulletList: []
 --- !u!4 &1900857847
 Transform:
   m_ObjectHideFlags: 0
@@ -2641,3 +2693,4 @@ SceneRoots:
   - {fileID: 89518533}
   - {fileID: 749403234}
   - {fileID: 100362644}
+  - {fileID: 126079291}

@@ -10,6 +10,7 @@ public class EnemySpawner : MonoBehaviour
 
     [SerializeField] private float spawnTime;
     private float currentTime;
+    public float totalTime;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -34,29 +35,23 @@ public class EnemySpawner : MonoBehaviour
         // Game Over Logic
         if (GameController.instance.gameOver)
         {
-            if(enemyList.Count > 0)
-            {
-                foreach(GameObject enemy in enemyList)
-                {
-                    Destroy(enemy);
-                }
-
-                enemyList.Clear();
-            }
+            DestroyAllEnemies();
         }
     }
 
     void SetSpawnTime()
     {
-        if(Time.time <= 15)
+        totalTime += Time.deltaTime;
+
+        if(totalTime <= 15)
         {
             spawnTime = 4f;
         }
-        else if(Time.time > 15 && Time.time < 50)
+        else if(totalTime > 15 && totalTime < 50)
         {
             spawnTime = 3f;
         }
-        else if(Time.time > 50 && Time.time < 90)
+        else if(totalTime > 50 && totalTime < 90)
         {
             spawnTime = 2f;
         }
@@ -65,5 +60,18 @@ public class EnemySpawner : MonoBehaviour
             spawnTime = 1.5f;
         }
 
+    }
+
+    public void DestroyAllEnemies()
+    {
+        if (enemyList.Count > 0)
+        {
+            foreach (GameObject enemy in enemyList)
+            {
+                Destroy(enemy);
+            }
+
+            enemyList.Clear();
+        }
     }
 }

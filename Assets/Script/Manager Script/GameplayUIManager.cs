@@ -37,7 +37,7 @@ public class GameplayUIManager : MonoBehaviour
         
     }
 
-    public void IncreaseScoreCount()
+    public void SetScoreCount()
     {
         scoreText.text = GameController.instance.playerScore.ToString();
     }
@@ -48,7 +48,7 @@ public class GameplayUIManager : MonoBehaviour
         playerHealth.color = healthBarColor.Evaluate(fillAmount);
     }
 
-    void ToggleGameUIScreen(bool mode)
+    public void ToggleGameUIScreen(bool mode)
     {
         gameUI.SetActive(mode);
     }
