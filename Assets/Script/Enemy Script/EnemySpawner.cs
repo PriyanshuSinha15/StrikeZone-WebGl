@@ -1,9 +1,12 @@
+using NUnit.Framework;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] private Transform[] spawnPoint;
     [SerializeField] private GameObject enemyPrefab;
+    [SerializeField] private List<GameObject> enemyList = new List<GameObject>();
 
     [SerializeField] private float spawnTime;
     private float currentTime;
@@ -24,14 +27,27 @@ public class EnemySpawner : MonoBehaviour
         {
             int randIndex = Random.Range(0, spawnPoint.Length);
             GameObject enemy = Instantiate(enemyPrefab, spawnPoint[randIndex].position, Quaternion.identity);
+            enemyList.Add(enemy);
             currentTime = spawnTime;
+        }
+
+        // Game Over Logic
+        if (GameController.instance.gameOver)
+        {
+            if(enemyList.Count > 0)
+            {
+                foreach(GameObject enemy in enemyList)
+                {
+                    Destroy(enemy);
+                }
+
+                enemyList.Clear();
+            }
         }
     }
 
     void SetSpawnTime()
     {
-        Debug.Log(Time.time);
-
         if(Time.time <= 15)
         {
             spawnTime = 4f;

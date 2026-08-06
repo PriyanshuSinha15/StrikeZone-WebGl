@@ -38,7 +38,7 @@ public class PlayerHealth : MonoBehaviour
         {
             currentHealth = 0;
             GameController.instance.gameOver = true;
-            UIManager.instance.OnPlayerDied();
+            GameplayUIManager.instance.OnPlayerDied();
             Time.timeScale = 0f;
             //onPlayerDied?.Invoke(this, EventArgs.Empty);
 

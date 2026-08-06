@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public enum EnemyState
@@ -80,7 +81,8 @@ public class EnemyController : MonoBehaviour
             GameObject bullet = Instantiate(bulletPrefab, spawnPoint.position, spawnPoint.rotation);
             bullet.GetComponent<EnemyBullet>().ShootBullet(bulletSpeed);
             SoundManager.instance.PlaySound(2);
-            Destroy(bullet, 3f);
+            GameController.instance.enemyBulletList.Add(bullet);
+            StartCoroutine(DestroyBullet(bullet, 3f));
             currentTimer = reloadTimer;
         }
     }
@@ -91,10 +93,12 @@ public class EnemyController : MonoBehaviour
         if (collision.gameObject.GetComponent<BulletScript>())
         {
             GameController.instance.playerScore++;
-            UIManager.instance.IncreaseScoreCount();
+            GameplayUIManager.instance.IncreaseScoreCount();
             SoundManager.instance.PlaySound(1);
             GameObject explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
             Destroy(explosion, 1.2f);
+
+            GameController.instance.playerBulletList.Remove(collision.gameObject);
             Destroy(collision.gameObject);
             Destroy(gameObject);
         }
@@ -118,5 +122,16 @@ public class EnemyController : MonoBehaviour
         Vector2 lookDir = player.position - spawnPoint.position;
         float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;
         return angle; 
+    }
+
+    IEnumerator DestroyBullet(GameObject bullet, float destroyDelay)
+    {
+        yield return new WaitForSeconds(destroyDelay);
+
+        if(bullet != null)
+        {
+            GameController.instance.enemyBulletList.Remove(bullet);
+            Destroy(bullet);
+        }
     }
 }

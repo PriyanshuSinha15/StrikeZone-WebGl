@@ -1,4 +1,6 @@
+using NUnit.Framework;
 using System;
+using System.Collections;
 using Terresquall;
 using UnityEngine;
 using UnityEngine.UI;
@@ -68,8 +70,9 @@ public class PlayerController : MonoBehaviour
         bullet.GetComponent<BulletScript>().ShootBullet(bulletSpeed);
 
         SoundManager.instance.PlaySound(0);
+        GameController.instance.playerBulletList.Add(bullet);
 
-        Destroy(bullet, 3f);
+        StartCoroutine(DestroyBullet(bullet, 3f));
     }
 
     private void OnDisable()
@@ -85,7 +88,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         GameInput();
-        RestrictPlayerPosition(); 
+        RestrictPlayerPosition();
     }
 
     private void FixedUpdate()
@@ -125,6 +128,17 @@ public class PlayerController : MonoBehaviour
         {
             float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;
             rb.rotation = angle;
+        }
+    }
+
+    IEnumerator DestroyBullet(GameObject bullet, float destroyDelay)
+    {
+        yield return new WaitForSeconds(destroyDelay);
+
+        if(bullet != null)
+        {
+            GameController.instance.playerBulletList.Remove(bullet);
+            Destroy(bullet);
         }
     }
 }
