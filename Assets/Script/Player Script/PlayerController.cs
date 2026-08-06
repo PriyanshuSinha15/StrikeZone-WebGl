@@ -18,8 +18,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float bulletSpeed;
 
     [Header("Move Area")]
-    [SerializeField] private float xRange;
-    [SerializeField] private float yRange;
+    [SerializeField] private float xMinRange;
+    [SerializeField] private float xMaxRange;
+    [SerializeField] private float yMinRange;
+    [SerializeField] private float yMaxRange;
 
     private Vector2 moveDir;
     private Vector2 worldMousePosition;
@@ -83,8 +85,8 @@ public class PlayerController : MonoBehaviour
 
     private void RestrictPlayerPosition()
     {
-        float xPosition = Mathf.Clamp(transform.position.x, -xRange, xRange);
-        float yPosition = Mathf.Clamp(transform.position.y, -yRange, yRange);
+        float xPosition = Mathf.Clamp(transform.position.x, xMinRange, xMaxRange);
+        float yPosition = Mathf.Clamp(transform.position.y, yMinRange, yMaxRange);
 
         transform.position = new Vector2(xPosition, yPosition);
     }
