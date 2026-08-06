@@ -12,6 +12,9 @@ public class EnemyController : MonoBehaviour
     private Transform player;
     private Rigidbody2D rb;
 
+    [Header("Explosion")]
+    [SerializeField] private GameObject explosionPrefab;
+
     [Header("Enemy Abilities")]
     [SerializeField] private float enemySpeed;
     [SerializeField] private float attackDistance;
@@ -22,6 +25,8 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private float bulletSpeed;
     private float currentTimer;
+    private Vector2 lookDir;
+    private float lookAngle;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     private void Awake()
@@ -49,22 +54,20 @@ public class EnemyController : MonoBehaviour
 
     void FixedUpdate()
     {
-        Vector2 lookDir = player.position - transform.position;
-        float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;
-        rb.rotation = angle;
-
+        EnemyRotation();
         Vector2 targetDir = lookDir.normalized;
-        
-       if(state == EnemyState.CHASE)
-       {
+        spawnPoint.eulerAngles = new Vector3(0, 0, SpawnPointRotAngle());
 
-       } 
-       else if(state == EnemyState.ATTACK)
-       {
+        if (state == EnemyState.CHASE)
+        {
+
+        }
+        else if (state == EnemyState.ATTACK)
+        {
             targetDir = Vector2.zero;
             ShootBullet();
-       }        
-       
+        }
+
         rb.linearVelocity = targetDir * enemySpeed;
     }
 
@@ -73,8 +76,10 @@ public class EnemyController : MonoBehaviour
         currentTimer -= Time.fixedDeltaTime;
         if(currentTimer <= 0)
         {
+
             GameObject bullet = Instantiate(bulletPrefab, spawnPoint.position, spawnPoint.rotation);
             bullet.GetComponent<EnemyBullet>().ShootBullet(bulletSpeed);
+            SoundManager.instance.PlaySound(2);
             Destroy(bullet, 3f);
             currentTimer = reloadTimer;
         }
@@ -88,6 +93,8 @@ public class EnemyController : MonoBehaviour
             GameController.instance.playerScore++;
             UIManager.instance.IncreaseScoreCount();
             SoundManager.instance.PlaySound(1);
+            GameObject explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+            Destroy(explosion, 1.2f);
             Destroy(collision.gameObject);
             Destroy(gameObject);
         }
@@ -97,5 +104,19 @@ public class EnemyController : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackDistance);
+    }
+
+    void EnemyRotation()
+    {
+        lookDir = player.position - transform.position;
+        lookAngle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;
+        rb.rotation = lookAngle;
+    }
+
+    float SpawnPointRotAngle()
+    {
+        Vector2 lookDir = player.position - spawnPoint.position;
+        float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;
+        return angle; 
     }
 }

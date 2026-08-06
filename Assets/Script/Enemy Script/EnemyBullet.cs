@@ -15,7 +15,7 @@ public class EnemyBullet : MonoBehaviour
 
     public void ShootBullet(float bulletSpeed)
     {
-        rb.AddForce(rb.transform.up * bulletSpeed, ForceMode2D.Impulse);
+        rb.AddForce(transform.up * bulletSpeed, ForceMode2D.Impulse);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

@@ -5,3 +5,4 @@ public class MyAudioClip_SO : ScriptableObject
 {
     public AudioClip[] clip;
 }
+

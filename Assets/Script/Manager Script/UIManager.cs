@@ -78,7 +78,7 @@ public class UIManager : MonoBehaviour
 
 
         scoreText.text = GameController.instance.playerScore.ToString();
-        SetPlayerHealth(PlayerHealth.instance.GetPlayerHealthRatio());
+        playerHealthImage.fillAmount = 1;
         playerHealthImage.color = healthBarColor.Evaluate(1);
         
     }
