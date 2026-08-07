@@ -350,7 +350,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ac107e5c54125c448e9c7f18c10cc39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayVlayReciever
-  gameController: {fileID: 0}
+  gameController: {fileID: 1900857846}
 --- !u!4 &126079291
 Transform:
   m_ObjectHideFlags: 0
@@ -2381,7 +2381,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameController
   startGame: 0
-  resetGame: 0
+  restartGame: 0
   pauseGame: 0
   resumeGame: 0
   playerScore: 0

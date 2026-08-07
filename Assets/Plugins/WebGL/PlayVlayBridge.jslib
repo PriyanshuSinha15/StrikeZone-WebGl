@@ -1,9 +1,16 @@
 mergeInto(LibraryManager.library, {
 
+    PV_GetUnity: function ()
+    {
+        return window.unityInstance || null;
+    },
+
     PV_RegisterCallbacks: function ()
     {
         if (!window.PlayVlay)
             return;
+
+
 
         window.PlayVlay.onInit(function (ctx)
         {
@@ -16,47 +23,69 @@ mergeInto(LibraryManager.library, {
 
         window.PlayVlay.onStart(function ()
         {
+            console.log("PlayVlay -> Start");
+
+            if(window.unityInstance)
+            {
+
             window.unityInstance.SendMessage(
                 "PlayVlayReceiver",
                 "OnStart",
                 ""
             );
+            }
         });
 
         window.PlayVlay.onPause(function ()
         {
+            console.log("PlayVlay Pause");
+
+            if(window.unityInstance){
             window.unityInstance.SendMessage(
                 "PlayVlayReceiver",
                 "OnPause",
                 ""
             );
+            }
         });
 
         window.PlayVlay.onResume(function ()
         {
+            console.log("PlayVlay Resume");
+
+            if(winow.unityInstance){
             window.unityInstance.SendMessage(
                 "PlayVlayReceiver",
                 "OnResume",
                 ""
             );
+            }
         });
 
         window.PlayVlay.onRestart(function ()
         {
+            console.log("PlayVlay Restart");
+
+            if(window.unityInstance){
             window.unityInstance.SendMessage(
                 "PlayVlayReceiver",
                 "OnRestart",
                 ""
             );
+            }
         });
 
         window.PlayVlay.onSetMuted(function (muted)
         {
+            console.log("PlayVlay onSetMuted");
+
+            if(window.unityInstance){
             window.unityInstance.SendMessage(
                 "PlayVlayReceiver",
                 "OnSetMuted",
                 muted ? "1" : "0"
             );
+            }
         });
     },
 
