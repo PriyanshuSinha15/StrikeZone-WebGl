@@ -7,6 +7,8 @@ public class PlayVlayReceiver : MonoBehaviour
 
     void Start()
     {
+        Debug.Log("Receiver Start");
+
         PlayVlayBridge.RegisterCallbacks();
 
         PlayVlayBridge.Ready();

@@ -21,15 +21,18 @@ public class EnemySpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        SetSpawnTime();
-
-        currentTime -= Time.deltaTime;
-        if(currentTime <= 0)
+        if (GameController.instance.playGame)
         {
-            int randIndex = Random.Range(0, spawnPoint.Length);
-            GameObject enemy = Instantiate(enemyPrefab, spawnPoint[randIndex].position, Quaternion.identity);
-            enemyList.Add(enemy);
-            currentTime = spawnTime;
+            SetSpawnTime();
+
+            currentTime -= Time.deltaTime;
+            if(currentTime <= 0)
+            {
+                int randIndex = Random.Range(0, spawnPoint.Length);
+                GameObject enemy = Instantiate(enemyPrefab, spawnPoint[randIndex].position, Quaternion.identity);
+                enemyList.Add(enemy);
+                currentTime = spawnTime;
+            }
         }
 
         // Game Over Logic

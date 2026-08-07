@@ -11,6 +11,7 @@ public class GameController : MonoBehaviour
     public bool restartGame;
     public bool pauseGame;
     public bool resumeGame;
+    public bool reportScore;
 
     [Header("Score")]
     public int playerScore;
@@ -94,6 +95,12 @@ public class GameController : MonoBehaviour
         {
             ResumeGame();
             resumeGame = false;
+        }
+
+        if (reportScore)
+        {
+            PlayVlayBridge.ReportScore(123);
+            reportScore = false;
         }
         #endregion Testing
     }

@@ -7,18 +7,30 @@ mergeInto(LibraryManager.library, {
 
     PV_RegisterCallbacks: function ()
     {
+        console.log("PV_RegisterCallbacks Called");
         if (!window.PlayVlay)
-            return;
+        {  
+            console.log("PlayVlay Not Found");
 
+            // Retry after a short delay
+            setTimeout(function () {
+            if (window.unityInstance)
+            PV_RegisterCallbacks();
+            }, 500);
+
+            return;
+        }
+            console.log("PlayVlay Found");
 
 
         window.PlayVlay.onInit(function (ctx)
         {
+            if(window.unityInstance){
             window.unityInstance.SendMessage(
                 "PlayVlayReceiver",
                 "OnInit",
                 JSON.stringify(ctx)
-            );
+            );}
         });
 
         window.PlayVlay.onStart(function ()
@@ -97,6 +109,7 @@ mergeInto(LibraryManager.library, {
 
     PV_ReportScore: function(score)
     {
+        console.log("PV_ReportScore:", score);
         if(window.PlayVlay)
             window.PlayVlay.reportScore(score);
     },
