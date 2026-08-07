@@ -1,133 +1,198 @@
 mergeInto(LibraryManager.library, {
 
-    PV_GetUnity: function ()
-    {
-        return window.unityInstance || null;
-    },
-
     PV_RegisterCallbacks: function ()
     {
-        console.log("PV_RegisterCallbacks Called");
-        if (!window.PlayVlay)
-        {  
-            console.log("PlayVlay Not Found");
+        console.log("[PlayVlay] RegisterCallbacks");
+
+        if (window.__PVCallbacksRegistered)
+        {
+            console.log("[PlayVlay] Callbacks already registered.");
             return;
         }
-            console.log("PlayVlay Found");
 
-
-        window.PlayVlay.onInit(function (ctx)
+        if (!window.PlayVlay)
         {
-            if(window.unityInstance){
-            window.unityInstance.SendMessage(
-                "PlayVlayReceiver",
-                "OnInit",
-                JSON.stringify(ctx)
-            );}
-        });
+            console.warn("[PlayVlay] SDK not found.");
+            return;
+        }
 
-        window.PlayVlay.onStart(function ()
+        if (!window.unityInstance)
         {
-            console.log("PlayVlay -> Start");
+            console.warn("[PlayVlay] Unity instance not found.");
+            return;
+        }
 
-            if(window.unityInstance)
+        window.__PVCallbacksRegistered = true;
+
+        // ------------------ Init ------------------
+
+        if (window.PlayVlay.onInit)
+        {
+            window.PlayVlay.onInit(function (ctx)
             {
+                console.log("[PlayVlay] onInit");
 
-            window.unityInstance.SendMessage(
-                "PlayVlayReceiver",
-                "OnStart",
-                ""
-            );
-            }
-        });
+                window.unityInstance.SendMessage(
+                    "PlayVlayReceiver",
+                    "OnInit",
+                    JSON.stringify(ctx)
+                );
+            });
+        }
 
-        window.PlayVlay.onPause(function ()
+        // ------------------ Start ------------------
+
+        if (window.PlayVlay.onStart)
         {
-            console.log("PlayVlay Pause");
+            window.PlayVlay.onStart(function ()
+            {
+                console.log("[PlayVlay] onStart");
 
-            if(window.unityInstance){
-            window.unityInstance.SendMessage(
-                "PlayVlayReceiver",
-                "OnPause",
-                ""
-            );
-            }
-        });
+                window.unityInstance.SendMessage(
+                    "PlayVlayReceiver",
+                    "OnStart",
+                    ""
+                );
+            });
+        }
 
-        window.PlayVlay.onResume(function ()
+        // ------------------ Pause ------------------
+
+        if (window.PlayVlay.onPause)
         {
-            console.log("PlayVlay Resume");
+            window.PlayVlay.onPause(function ()
+            {
+                console.log("[PlayVlay] onPause");
 
-            if(winow.unityInstance){
-            window.unityInstance.SendMessage(
-                "PlayVlayReceiver",
-                "OnResume",
-                ""
-            );
-            }
-        });
+                window.unityInstance.SendMessage(
+                    "PlayVlayReceiver",
+                    "OnPause",
+                    ""
+                );
+            });
+        }
 
-        window.PlayVlay.onRestart(function ()
+        // ------------------ Resume ------------------
+
+        if (window.PlayVlay.onResume)
         {
-            console.log("PlayVlay Restart");
+            window.PlayVlay.onResume(function ()
+            {
+                console.log("[PlayVlay] onResume");
 
-            if(window.unityInstance){
-            window.unityInstance.SendMessage(
-                "PlayVlayReceiver",
-                "OnRestart",
-                ""
-            );
-            }
-        });
+                window.unityInstance.SendMessage(
+                    "PlayVlayReceiver",
+                    "OnResume",
+                    ""
+                );
+            });
+        }
 
-        window.PlayVlay.onSetMuted(function (muted)
+        // ------------------ Restart ------------------
+
+        if (window.PlayVlay.onRestart)
         {
-            console.log("PlayVlay onSetMuted");
+            window.PlayVlay.onRestart(function ()
+            {
+                console.log("[PlayVlay] onRestart");
 
-            if(window.unityInstance){
-            window.unityInstance.SendMessage(
-                "PlayVlayReceiver",
-                "OnSetMuted",
-                muted ? "1" : "0"
-            );
-            }
-        });
+                window.unityInstance.SendMessage(
+                    "PlayVlayReceiver",
+                    "OnRestart",
+                    ""
+                );
+            });
+        }
+
+        // ------------------ Mute ------------------
+
+        if (window.PlayVlay.onSetMuted)
+        {
+            window.PlayVlay.onSetMuted(function (muted)
+            {
+                console.log("[PlayVlay] onSetMuted : " + muted);
+
+                window.unityInstance.SendMessage(
+                    "PlayVlayReceiver",
+                    "OnSetMuted",
+                    muted ? "1" : "0"
+                );
+            });
+        }
+
+        console.log("[PlayVlay] All callbacks registered.");
     },
+
+    //===================================================
 
     PV_Ready: function ()
     {
-        if(window.PlayVlay)
+        console.log("[PlayVlay] Ready()");
+
+        if (window.PlayVlay && window.PlayVlay.ready)
+        {
             window.PlayVlay.ready();
+        }
     },
 
-    PV_ReportScore: function(score)
+    //===================================================
+
+    PV_ReportScore: function (score)
     {
-        console.log("PV_ReportScore:", score);
-        if(window.PlayVlay)
+        console.log("[PlayVlay] ReportScore : " + score);
+
+        if (window.PlayVlay && window.PlayVlay.reportScore)
+        {
             window.PlayVlay.reportScore(score);
+        }
     },
 
-    PV_GameOver: function(score)
+    //===================================================
+
+    PV_GameOver: function (score)
     {
-        if(window.PlayVlay)
+        console.log("[PlayVlay] GameOver : " + score);
+
+        if (window.PlayVlay && window.PlayVlay.gameOver)
+        {
             window.PlayVlay.gameOver(score);
+        }
     },
 
-    PV_ReportHighScore: function(score)
+    //===================================================
+
+    PV_ReportHighScore: function (score)
     {
-        if(window.PlayVlay)
+        console.log("[PlayVlay] ReportHighScore : " + score);
+
+        if (window.PlayVlay && window.PlayVlay.reportHighScore)
+        {
             window.PlayVlay.reportHighScore(score);
+        }
     },
 
-    PV_ReachedLevel: function(level)
+    //===================================================
+
+    PV_ReachedLevel: function (level)
     {
-        if(window.PlayVlay)
+        console.log("[PlayVlay] ReachedLevel : " + level);
+
+        if (window.PlayVlay && window.PlayVlay.reachedLevel)
+        {
             window.PlayVlay.reachedLevel(level);
+        }
     },
 
-    PV_HapticSuccess: function()
+    //===================================================
+
+    PV_HapticSuccess: function ()
     {
-        if(window.PlayVlay)
+        console.log("[PlayVlay] Haptic Success");
+
+        if (window.PlayVlay && window.PlayVlay.haptic)
+        {
             window.PlayVlay.haptic("success");
+        }
     }
+
 });
