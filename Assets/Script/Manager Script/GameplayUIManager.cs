@@ -9,6 +9,11 @@ public class GameplayUIManager : MonoBehaviour
     [Header("UI References")]
     [SerializeField] private GameObject gameUI;
 
+    [Header("Test References")]
+    [SerializeField] private bool test;
+    [SerializeField] private GameObject startGameUI;
+    [SerializeField] private GameObject retryGameUI;
+
     [Header("References")]
     [SerializeField] private Image playerHealth;
     [SerializeField] private TMP_Text scoreText;
@@ -26,6 +31,17 @@ public class GameplayUIManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        //TEST Code
+        if (test)
+        {
+            startGameUI.SetActive(true);
+        }
+        else
+        {
+            startGameUI.SetActive(false);
+        }
+        //TEST Code
+
         scoreText.text = GameController.instance.playerScore.ToString();
         playerHealth.fillAmount = 1;
         playerHealth.color = healthBarColor.Evaluate(1);
@@ -56,5 +72,30 @@ public class GameplayUIManager : MonoBehaviour
     public void OnPlayerDied()
     {
         ToggleGameUIScreen(false);
+
+        //TEST Code
+        if (test)
+        {
+            retryGameUI.SetActive(true);
+        }
+    }
+
+    //Test CODE 
+    public void StartGameTest()
+    {
+        if (test)
+        {
+            startGameUI.SetActive(false);
+            GameController.instance.StartGame();
+        }
+    }
+
+    public void RestartGameTest()
+    {
+        if (test)
+        {
+            GameController.instance.RestartGame();
+            retryGameUI.SetActive(false);
+        }
     }
 }
