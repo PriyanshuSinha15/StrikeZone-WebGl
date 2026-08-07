@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Joystick")]
     [SerializeField] private VirtualJoystick movementJoystick;
-    [SerializeField] private VirtualJoystick rotationJoystick;
+    //[SerializeField] private VirtualJoystick rotationJoystick;
 
     [Header("Button")]
     [SerializeField] private Button shootButton;
@@ -104,8 +104,8 @@ public class PlayerController : MonoBehaviour
         moveDir.y = movementJoystick.GetAxis("Vertical");
         moveDir.Normalize();
 
-        //Vector2 mousePosition = inputSystem.UI.Point.ReadValue<Vector2>();
-        //worldMousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+        Vector2 mousePosition = inputSystem.UI.Point.ReadValue<Vector2>();
+        worldMousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
     }
 
     private void RestrictPlayerPosition()
@@ -120,8 +120,8 @@ public class PlayerController : MonoBehaviour
     {
         rb.linearVelocity = moveDir * speed;
 
-        //Vector2 lookDir = worldMousePosition - rb.position;
-        Vector2 lookDir = new Vector2(rotationJoystick.GetAxis("Horizontal"), rotationJoystick.GetAxis("Vertical"));
+        Vector2 lookDir = worldMousePosition - rb.position;
+        //Vector2 lookDir = new Vector2(rotationJoystick.GetAxis("Horizontal"), rotationJoystick.GetAxis("Vertical"));
         lookDir.Normalize();
 
         if(lookDir.sqrMagnitude > 0.01)
