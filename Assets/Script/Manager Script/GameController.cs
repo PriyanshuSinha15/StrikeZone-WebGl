@@ -6,6 +6,8 @@ public class GameController : MonoBehaviour
 {
     public static GameController instance;
 
+    private InputSystem_Actions inputSystem;
+
     [Header("Test Boolean")]
     public bool startGame;
     public bool restartGame;
@@ -42,7 +44,33 @@ public class GameController : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        inputSystem = new InputSystem_Actions();
         //PlayerHealth.instance.onPlayerDied += Player_onPlayerDied;
+    }
+
+    private void OnEnable()
+    {
+        inputSystem.Enable();
+        inputSystem.Player.Jump.performed += Start_performed;
+        inputSystem.Player.Sprint.performed += Restart_performed;
+    }
+
+
+    private void OnDisable()
+    {
+        inputSystem.Disable();
+        inputSystem.Player.Jump.performed -= Start_performed;
+        inputSystem.Player.Sprint.performed -= Restart_performed;
+    }
+
+    private void Restart_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        RestartGame();
+    }
+    private void Start_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        StartGame();
     }
 
     //Not Working Correctly

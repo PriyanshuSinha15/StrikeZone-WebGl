@@ -11,13 +11,6 @@ mergeInto(LibraryManager.library, {
         if (!window.PlayVlay)
         {  
             console.log("PlayVlay Not Found");
-
-            // Retry after a short delay
-            setTimeout(function () {
-            if (window.unityInstance)
-            PV_RegisterCallbacks();
-            }, 500);
-
             return;
         }
             console.log("PlayVlay Found");
