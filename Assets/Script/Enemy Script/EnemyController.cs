@@ -93,7 +93,7 @@ public class EnemyController : MonoBehaviour
     {
         if (collision.gameObject.GetComponent<BulletScript>())
         {
-            GameController.instance.playerScore++;
+            GameController.instance.playerScore += 2;
 
             //PlayVlay Score Report
             PlayVlayBridge.ReportScore(GameController.instance.playerScore);

@@ -13,9 +13,12 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D rb;
 
+    [Header("Input Mangnitude")]
+    [SerializeField] private float shootInputMagnitude;
+
     [Header("Joystick")]
     [SerializeField] private VirtualJoystick movementJoystick;
-    //[SerializeField] private VirtualJoystick rotationJoystick;
+    [SerializeField] private VirtualJoystick rotationJoystick;
 
     [Header("Button")]
     [SerializeField] private Button shootButton;
@@ -27,6 +30,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private float bulletSpeed;
+    [SerializeField] private float reloadTimer;
+    private float currentTimer;
 
     [Header("Move Area")]
     [SerializeField] private float xMinRange;
@@ -66,13 +71,20 @@ public class PlayerController : MonoBehaviour
 
     private void ShootBullet()
     {
-        GameObject bullet = Instantiate(bulletPrefab, spawnPoint.position, spawnPoint.rotation);
-        bullet.GetComponent<BulletScript>().ShootBullet(bulletSpeed);
+        currentTimer -= Time.deltaTime;
 
-        SoundManager.instance.PlaySound(0);
-        GameController.instance.playerBulletList.Add(bullet);
+        if(currentTimer <= 0)
+        {
+            GameObject bullet = Instantiate(bulletPrefab, spawnPoint.position, spawnPoint.rotation);
+            bullet.GetComponent<BulletScript>().ShootBullet(bulletSpeed);
 
-        StartCoroutine(DestroyBullet(bullet, 3f));
+            SoundManager.instance.PlaySound(0);
+            GameController.instance.playerBulletList.Add(bullet);
+
+            StartCoroutine(DestroyBullet(bullet, 3f));
+
+            currentTimer = reloadTimer;
+        }
     }
 
     private void OnDisable()
@@ -81,7 +93,7 @@ public class PlayerController : MonoBehaviour
     }
     void Start()
     {
-        shootButton.onClick.AddListener(() => ShootBullet());
+        //shootButton.onClick.AddListener(() => ShootBullet());
     }
 
     // Update is called once per frame
@@ -102,6 +114,8 @@ public class PlayerController : MonoBehaviour
 
         moveDir.x = movementJoystick.GetAxis("Horizontal");
         moveDir.y = movementJoystick.GetAxis("Vertical");
+
+        shootInputMagnitude = moveDir.magnitude;
         moveDir.Normalize();
 
         Vector2 mousePosition = inputSystem.UI.Point.ReadValue<Vector2>();
@@ -120,13 +134,18 @@ public class PlayerController : MonoBehaviour
     {
         rb.linearVelocity = moveDir * speed;
 
-        Vector2 lookDir = worldMousePosition - rb.position;
-        //Vector2 lookDir = new Vector2(rotationJoystick.GetAxis("Horizontal"), rotationJoystick.GetAxis("Vertical"));
-        lookDir.Normalize();
+        //Vector2 lookDir = worldMousePosition - rb.position;
+        Vector2 lookDir = new Vector2(rotationJoystick.GetAxis("Horizontal"), rotationJoystick.GetAxis("Vertical"));
+        Vector2 lookDirNormalized = lookDir.normalized;
 
+        if(lookDir.magnitude > 0.8f)
+        {
+            shootInputMagnitude = lookDir.magnitude;
+            ShootBullet();
+        }
         if(lookDir.sqrMagnitude > 0.01)
         {
-            float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;
+            float angle = Mathf.Atan2(lookDirNormalized.y, lookDirNormalized.x) * Mathf.Rad2Deg - 90f;
             rb.rotation = angle;
         }
     }
