@@ -2465,7 +2465,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8834734170784175514, guid: 5c2cb823f1af59541974bd4a360355f6, type: 3}
       propertyPath: radius
-      value: 2.57
+      value: 1.92
       objectReference: {fileID: 0}
     - target: {fileID: 8834734170784175524, guid: 5c2cb823f1af59541974bd4a360355f6, type: 3}
       propertyPath: m_Sprite
@@ -3542,7 +3542,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8834734170784175514, guid: 5c2cb823f1af59541974bd4a360355f6, type: 3}
       propertyPath: radius
-      value: 2.57
+      value: 1.92
       objectReference: {fileID: 0}
     - target: {fileID: 8834734170784175524, guid: 5c2cb823f1af59541974bd4a360355f6, type: 3}
       propertyPath: m_Sprite
@@ -3614,6 +3614,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1503975964}
     - target: {fileID: 1731366832452445707, guid: 7a73b871c6103f64790206cd9ffad1eb, type: 3}
+      propertyPath: enemyDetectRange
+      value: 9.95
+      objectReference: {fileID: 0}
+    - target: {fileID: 1731366832452445707, guid: 7a73b871c6103f64790206cd9ffad1eb, type: 3}
       propertyPath: movementJoystick
       value: 
       objectReference: {fileID: 2088914238}
@@ -3621,6 +3625,10 @@ PrefabInstance:
       propertyPath: rotationJoystick
       value: 
       objectReference: {fileID: 1250310764}
+    - target: {fileID: 1731366832452445707, guid: 7a73b871c6103f64790206cd9ffad1eb, type: 3}
+      propertyPath: enemyLayer.m_Bits
+      value: 64
+      objectReference: {fileID: 0}
     - target: {fileID: 4598706984153253603, guid: 7a73b871c6103f64790206cd9ffad1eb, type: 3}
       propertyPath: m_Name
       value: Player

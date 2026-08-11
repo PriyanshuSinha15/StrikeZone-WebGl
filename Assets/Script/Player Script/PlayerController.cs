@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Player Abilities")]
     [SerializeField] private float speed;
+    [SerializeField] private float enemyDetectRange;
 
     [Header("Shoot")]
     [SerializeField] private GameObject bulletPrefab;
@@ -32,6 +33,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float bulletSpeed;
     [SerializeField] private float reloadTimer;
     private float currentTimer;
+
+    [Header("Enemy")]
+    [SerializeField] private LayerMask enemyLayer;
 
     [Header("Move Area")]
     [SerializeField] private float xMinRange;
@@ -105,6 +109,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        DetectEnemies();
         MoveAndRotatePlayer();
     }
 
@@ -115,7 +120,6 @@ public class PlayerController : MonoBehaviour
         moveDir.x = movementJoystick.GetAxis("Horizontal");
         moveDir.y = movementJoystick.GetAxis("Vertical");
 
-        shootInputMagnitude = moveDir.magnitude;
         moveDir.Normalize();
 
         Vector2 mousePosition = inputSystem.UI.Point.ReadValue<Vector2>();
@@ -138,11 +142,11 @@ public class PlayerController : MonoBehaviour
         Vector2 lookDir = new Vector2(rotationJoystick.GetAxis("Horizontal"), rotationJoystick.GetAxis("Vertical"));
         Vector2 lookDirNormalized = lookDir.normalized;
 
-        if(lookDir.magnitude > 0.8f)
-        {
-            shootInputMagnitude = lookDir.magnitude;
-            ShootBullet();
-        }
+        //if(lookDir.magnitude > 0.8f)
+        //{
+        //    shootInputMagnitude = lookDir.magnitude;
+        //    ShootBullet();
+        //}
         if(lookDir.sqrMagnitude > 0.01)
         {
             float angle = Mathf.Atan2(lookDirNormalized.y, lookDirNormalized.x) * Mathf.Rad2Deg - 90f;
@@ -159,5 +163,22 @@ public class PlayerController : MonoBehaviour
             GameController.instance.playerBulletList.Remove(bullet);
             Destroy(bullet);
         }
+    }
+
+    void DetectEnemies()
+    {
+        Collider2D[] enemies = Physics2D.OverlapCircleAll(transform.position, enemyDetectRange, enemyLayer);
+
+        if(enemies.Length > 0 )
+        {
+            Debug.Log("Detect Enemies");
+            ShootBullet();
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, enemyDetectRange);
     }
 }
