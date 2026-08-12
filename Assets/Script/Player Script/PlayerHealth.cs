@@ -7,7 +7,7 @@ public class PlayerHealth : MonoBehaviour
 
     //public event EventHandler onPlayerDied;
 
-    [SerializeField] private float totalHealth;
+    public float totalHealth;
     public float currentHealth;
     
     void Awake()
@@ -55,6 +55,6 @@ public class PlayerHealth : MonoBehaviour
     public void IncreasePlayerHealth(float amount)
     {
         currentHealth += amount;
-        if (currentHealth > 100) currentHealth = 100;
+        if (currentHealth > PlayerHealth.instance.totalHealth) currentHealth = PlayerHealth.instance.totalHealth;
     }
 }

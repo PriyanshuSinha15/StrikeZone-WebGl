@@ -4,13 +4,28 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [SerializeField] private Transform[] spawnPoint;
+    public static EnemySpawner instance;
+
+    [Header("Enemy")]
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private List<GameObject> enemyList = new List<GameObject>();
+    public int enemySpawnedCount;
+    public int enemiesLeftCount;
+    public int totalEnemies;
 
+    [Header("Spawn Properties")]
+    [SerializeField] private Transform[] spawnPoint;
     [SerializeField] private float spawnTime;
     private float currentTime;
     public float totalTime;
+
+    private void Awake()
+    {
+        if(instance == null)
+        {
+            instance = this;
+        }
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -30,10 +45,15 @@ public class EnemySpawner : MonoBehaviour
             currentTime -= Time.deltaTime;
             if(currentTime <= 0)
             {
-                int randIndex = Random.Range(0, spawnPoint.Length);
-                GameObject enemy = Instantiate(enemyPrefab, spawnPoint[randIndex].position, Quaternion.identity);
-                enemyList.Add(enemy);
-                currentTime = spawnTime;
+                // Testing total enemies count
+                if(enemySpawnedCount < totalEnemies)
+                {
+                    int randIndex = Random.Range(0, spawnPoint.Length);
+                    GameObject enemy = Instantiate(enemyPrefab, spawnPoint[randIndex].position, Quaternion.identity);
+                    enemyList.Add(enemy);
+                    enemySpawnedCount++;
+                    currentTime = spawnTime;
+                }
             }
         }
 
@@ -48,22 +68,23 @@ public class EnemySpawner : MonoBehaviour
     {
         totalTime += Time.deltaTime;
 
-        if(totalTime <= 15)
-        {
-            spawnTime = 4f;
-        }
-        else if(totalTime > 15 && totalTime < 50)
-        {
-            spawnTime = 3f;
-        }
-        else if(totalTime > 50 && totalTime < 90)
-        {
-            spawnTime = 2f;
-        }
-        else
-        {
-            spawnTime = 1.5f;
-        }
+       
+        //if(totalTime <= 15)
+        //{
+        //    spawnTime = 4f;
+        //}
+        //else if(totalTime > 15 && totalTime < 50)
+        //{
+        //    spawnTime = 3f;
+        //}
+        //else if(totalTime > 50 && totalTime < 90)
+        //{
+        //    spawnTime = 2f;
+        //}
+        //else
+        //{
+        //    spawnTime = 1.5f;
+        //}
 
     }
 

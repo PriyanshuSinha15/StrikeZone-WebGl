@@ -23,7 +23,7 @@ public class EnemyBullet : MonoBehaviour
         if(collision.gameObject == PlayerController.instance.gameObject)
         {
             collision.GetComponent<PlayerHealth>().TakeDamage(bulletDamage);
-            GameplayUIManager.instance.SetPlayerHealth(PlayerHealth.instance.GetPlayerHealthRatio());
+            GameplayUIManager.instance.SetPlayerHealthUI(PlayerHealth.instance.GetPlayerHealthRatio());
             Destroy(gameObject);
         }
     }

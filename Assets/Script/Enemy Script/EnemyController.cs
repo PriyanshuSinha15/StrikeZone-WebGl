@@ -98,7 +98,7 @@ public class EnemyController : MonoBehaviour
             //PlayVlay Score Report
             PlayVlayBridge.ReportScore(GameController.instance.playerScore);
 
-            GameplayUIManager.instance.SetScoreCount();
+            GameplayUIManager.instance.SetScoreCountUI();
             SoundManager.instance.PlaySound(1);
             GameObject explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
             Destroy(explosion, 1.2f);
@@ -106,6 +106,11 @@ public class EnemyController : MonoBehaviour
             GameController.instance.playerBulletList.Remove(collision.gameObject);
             Destroy(collision.gameObject);
 
+            //Enemies Left Count Test
+            EnemySpawner.instance.enemiesLeftCount--;
+            GameplayUIManager.instance.SetEnemiesLeftCountUI();
+
+            //Health Kit Power up
             GameObject healthKit = Instantiate(GameController.instance.healthKit, transform.position, Quaternion.identity);
             Destroy(healthKit, 20f);
 

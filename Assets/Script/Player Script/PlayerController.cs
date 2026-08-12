@@ -179,7 +179,7 @@ public class PlayerController : MonoBehaviour
 
         if(enemies.Length > 0 )
         {
-            Debug.Log("Detect Enemies");
+            //Debug.Log("Detect Enemies");
             ShootBullet();
         }
     }

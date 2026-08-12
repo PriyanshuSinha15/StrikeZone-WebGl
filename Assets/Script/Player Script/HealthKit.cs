@@ -20,7 +20,7 @@ public class HealthKit : MonoBehaviour
         if(collision.GetComponent<PlayerHealth>())
         {
             PlayerHealth.instance.IncreasePlayerHealth(healthBoost);
-            GameplayUIManager.instance.SetPlayerHealth(PlayerHealth.instance.GetPlayerHealthRatio());
+            GameplayUIManager.instance.SetPlayerHealthUI(PlayerHealth.instance.GetPlayerHealthRatio());
             Destroy(gameObject);
         }
     }

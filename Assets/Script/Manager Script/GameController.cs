@@ -22,6 +22,9 @@ public class GameController : MonoBehaviour
     public bool gameOver;
     public bool playGame;
 
+    [Header("Level References")]
+    public int currentLevel;
+    public int enemiesLeft;
 
     [Header("Player References")]
     public GameObject player;
@@ -29,9 +32,6 @@ public class GameController : MonoBehaviour
 
     [Header("HealthKit")]
     public GameObject healthKit;
-
-    [Header("Enemy References")]
-    public EnemySpawner enemySpawner;
 
     [Header("Bullet References")]
     public List<GameObject> playerBulletList = new List<GameObject>();
@@ -172,7 +172,7 @@ public class GameController : MonoBehaviour
     {
         Time.timeScale = 1;
         DestroyBullet();
-        enemySpawner.DestroyAllEnemies();
+        EnemySpawner.instance.DestroyAllEnemies();
         ResetGame();
     }
 
@@ -187,10 +187,16 @@ public class GameController : MonoBehaviour
         player.transform.position = playerSpawnPoint.position;
 
         GameplayUIManager.instance.ToggleGameUIScreen(true);
-        GameplayUIManager.instance.SetScoreCount();
-        PlayerHealth.instance.currentHealth = 100f;
-        GameplayUIManager.instance.SetPlayerHealth(PlayerHealth.instance.GetPlayerHealthRatio());
-        enemySpawner.totalTime = 0f;
+        GameplayUIManager.instance.SetScoreCountUI();
+        PlayerHealth.instance.currentHealth = PlayerHealth.instance.totalHealth;
+
+        //Testing Enemies Count
+        EnemySpawner.instance.enemiesLeftCount = EnemySpawner.instance.totalEnemies;
+        EnemySpawner.instance.enemySpawnedCount = 0;
+        GameplayUIManager.instance.SetEnemiesLeftCountUI();
+
+        GameplayUIManager.instance.SetPlayerHealthUI(PlayerHealth.instance.GetPlayerHealthRatio());
+        EnemySpawner.instance.totalTime = 0f;
 
         PlayVlayBridge.ReportScore(playerScore);
     }
@@ -214,6 +220,11 @@ public class GameController : MonoBehaviour
             }
             enemyBulletList.Clear();
         }
+    }
+
+    void GetCurrentLevelEnemies()
+    {
+
     }
 
 }

@@ -21,6 +21,7 @@ public class GameplayUIManager : MonoBehaviour
     [Header("References")]
     [SerializeField] private Image playerHealth;
     [SerializeField] private TMP_Text scoreText;
+    [SerializeField] private TMP_Text enemiesLeftCount;
 
     [Header("HealthBar")]
     [SerializeField] private Gradient healthBarColor;
@@ -60,15 +61,20 @@ public class GameplayUIManager : MonoBehaviour
         
     }
 
-    public void SetScoreCount()
+    public void SetScoreCountUI()
     {
         scoreText.text = GameController.instance.playerScore.ToString();
     }
 
-    public void SetPlayerHealth(float fillAmount)
+    public void SetPlayerHealthUI(float fillAmount)
     {
         playerHealth.fillAmount = fillAmount;
         playerHealth.color = healthBarColor.Evaluate(fillAmount);
+    }
+
+    public void SetEnemiesLeftCountUI()
+    {
+        enemiesLeftCount.text = "Enemies Left : " +  EnemySpawner.instance.enemiesLeftCount;
     }
 
     public void ToggleGameUIScreen(bool mode)
