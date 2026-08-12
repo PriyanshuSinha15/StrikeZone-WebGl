@@ -105,6 +105,10 @@ public class EnemyController : MonoBehaviour
 
             GameController.instance.playerBulletList.Remove(collision.gameObject);
             Destroy(collision.gameObject);
+
+            GameObject healthKit = Instantiate(GameController.instance.healthKit, transform.position, Quaternion.identity);
+            Destroy(healthKit, 20f);
+
             Destroy(gameObject);
         }
     }

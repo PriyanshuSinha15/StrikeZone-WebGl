@@ -25,7 +25,7 @@ public class PlayVlayReceiver : MonoBehaviour
     {
         Debug.Log("Start");
 
-        gameController.StartGame();
+        //gameController.StartGame();
     }
 
     public void OnPause(string value)

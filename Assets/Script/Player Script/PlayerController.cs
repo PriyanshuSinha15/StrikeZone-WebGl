@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Joystick")]
     [SerializeField] private VirtualJoystick movementJoystick;
-    [SerializeField] private VirtualJoystick rotationJoystick;
+    //[SerializeField] private VirtualJoystick rotationJoystick;
 
     [Header("Button")]
     [SerializeField] private Button shootButton;
@@ -138,8 +138,14 @@ public class PlayerController : MonoBehaviour
     {
         rb.linearVelocity = moveDir * speed;
 
-        //Vector2 lookDir = worldMousePosition - rb.position;
-        Vector2 lookDir = new Vector2(rotationJoystick.GetAxis("Horizontal"), rotationJoystick.GetAxis("Vertical"));
+        Vector2 lookDir = worldMousePosition - rb.position;
+
+        Vector3 worldMousePosition_3dPosition = new Vector3(worldMousePosition.x, worldMousePosition.y, 0);
+
+        Vector2 spawnPointLookDir = worldMousePosition_3dPosition - spawnPoint.transform.position;
+        spawnPointLookDir.Normalize();
+        
+        //Vector2 lookDir = new Vector2(rotationJoystick.GetAxis("Horizontal"), rotationJoystick.GetAxis("Vertical"));
         Vector2 lookDirNormalized = lookDir.normalized;
 
         //if(lookDir.magnitude > 0.8f)
@@ -147,11 +153,13 @@ public class PlayerController : MonoBehaviour
         //    shootInputMagnitude = lookDir.magnitude;
         //    ShootBullet();
         //}
-        if(lookDir.sqrMagnitude > 0.01)
-        {
+        //if(lookDir.sqrMagnitude > 0.01)
+        //{
             float angle = Mathf.Atan2(lookDirNormalized.y, lookDirNormalized.x) * Mathf.Rad2Deg - 90f;
+            float spawnPointRotAngle = Mathf.Atan2(spawnPointLookDir.y, spawnPointLookDir.x) * Mathf.Rad2Deg - 90f;    
+            spawnPoint.transform.eulerAngles = new Vector3(0, 0, spawnPointRotAngle);
             rb.rotation = angle;
-        }
+        //}
     }
 
     IEnumerator DestroyBullet(GameObject bullet, float destroyDelay)

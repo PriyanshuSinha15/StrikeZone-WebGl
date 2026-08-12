@@ -51,4 +51,10 @@ public class PlayerHealth : MonoBehaviour
         float fillAmount = currentHealth / totalHealth;
         return fillAmount;
     }
+
+    public void IncreasePlayerHealth(float amount)
+    {
+        currentHealth += amount;
+        if (currentHealth > 100) currentHealth = 100;
+    }
 }

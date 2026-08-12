@@ -27,6 +27,9 @@ public class GameController : MonoBehaviour
     public GameObject player;
     public Transform playerSpawnPoint;
 
+    [Header("HealthKit")]
+    public GameObject healthKit;
+
     [Header("Enemy References")]
     public EnemySpawner enemySpawner;
 

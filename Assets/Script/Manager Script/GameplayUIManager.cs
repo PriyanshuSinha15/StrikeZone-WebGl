@@ -6,8 +6,12 @@ public class GameplayUIManager : MonoBehaviour
 {
     public static GameplayUIManager instance;
 
+    [Header("Button")]
+    [SerializeField] private Button startButton;
+
     [Header("UI References")]
     [SerializeField] private GameObject gameUI;
+    [SerializeField] private GameObject goalUI;
 
     [Header("Test References")]
     [SerializeField] private bool test;
@@ -34,14 +38,17 @@ public class GameplayUIManager : MonoBehaviour
         //TEST Code
         if (test)
         {
-            startGameUI.SetActive(true);
+            //startGameUI.SetActive(true);
         }
         else
         {
-            startGameUI.SetActive(false);
+            //startGameUI.SetActive(false);
         }
         //TEST Code
 
+        startButton.onClick.AddListener(() => StartGameProcess());
+
+        goalUI.SetActive(true);
         scoreText.text = GameController.instance.playerScore.ToString();
         playerHealth.fillAmount = 1;
         playerHealth.color = healthBarColor.Evaluate(1);
@@ -81,13 +88,10 @@ public class GameplayUIManager : MonoBehaviour
     }
 
     //Test CODE 
-    public void StartGameTest()
+    public void StartGameProcess()
     {
-        if (test)
-        {
-            startGameUI.SetActive(false);
-            GameController.instance.StartGame();
-        }
+        goalUI.SetActive(false);
+        GameController.instance.StartGame();
     }
 
     public void RestartGameTest()
