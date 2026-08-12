@@ -112,6 +112,7 @@ public class EnemyController : MonoBehaviour
 
             //Health Kit Power up
             GameObject healthKit = Instantiate(GameController.instance.healthKit, transform.position, Quaternion.identity);
+            GameController.instance.healthKitList.Add(healthKit);
             Destroy(healthKit, 20f);
 
             Destroy(gameObject);

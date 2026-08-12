@@ -1652,7 +1652,7 @@ MonoBehaviour:
   startButton: {fileID: 338432628}
   gameUI: {fileID: 731664629}
   goalUI: {fileID: 1703802858}
-  test: 1
+  test: 0
   startGameUI: {fileID: 863748048}
   retryGameUI: {fileID: 299422489}
   playerHealth: {fileID: 1631226181}
@@ -3964,6 +3964,30 @@ PrefabInstance:
       propertyPath: radius
       value: 1.92
       objectReference: {fileID: 0}
+    - target: {fileID: 8834734170784175514, guid: 5c2cb823f1af59541974bd4a360355f6, type: 3}
+      propertyPath: directions
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8834734170784175514, guid: 5c2cb823f1af59541974bd4a360355f6, type: 3}
+      propertyPath: boundaries.x
+      value: 150.98389
+      objectReference: {fileID: 0}
+    - target: {fileID: 8834734170784175514, guid: 5c2cb823f1af59541974bd4a360355f6, type: 3}
+      propertyPath: boundaries.y
+      value: 153.32916
+      objectReference: {fileID: 0}
+    - target: {fileID: 8834734170784175514, guid: 5c2cb823f1af59541974bd4a360355f6, type: 3}
+      propertyPath: snapsToTouch
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8834734170784175514, guid: 5c2cb823f1af59541974bd4a360355f6, type: 3}
+      propertyPath: boundaries.width
+      value: 350
+      objectReference: {fileID: 0}
+    - target: {fileID: 8834734170784175514, guid: 5c2cb823f1af59541974bd4a360355f6, type: 3}
+      propertyPath: boundaries.height
+      value: 350
+      objectReference: {fileID: 0}
     - target: {fileID: 8834734170784175524, guid: 5c2cb823f1af59541974bd4a360355f6, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -4013,6 +4037,10 @@ PrefabInstance:
       propertyPath: movementJoystick
       value: 
       objectReference: {fileID: 2088914238}
+    - target: {fileID: 1731366832452445707, guid: 7a73b871c6103f64790206cd9ffad1eb, type: 3}
+      propertyPath: spawnPointRotationRange
+      value: 1.55
+      objectReference: {fileID: 0}
     - target: {fileID: 4545256349698435727, guid: 7a73b871c6103f64790206cd9ffad1eb, type: 3}
       propertyPath: totalHealth
       value: 100

@@ -21,6 +21,7 @@ public class HealthKit : MonoBehaviour
         {
             PlayerHealth.instance.IncreasePlayerHealth(healthBoost);
             GameplayUIManager.instance.SetPlayerHealthUI(PlayerHealth.instance.GetPlayerHealthRatio());
+            GameController.instance.healthKitList.Remove(this.gameObject);
             Destroy(gameObject);
         }
     }

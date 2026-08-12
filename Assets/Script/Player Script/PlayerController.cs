@@ -1,9 +1,11 @@
 using NUnit.Framework;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Terresquall;
 using UnityEngine;
 using UnityEngine.UI;
+using MyTouch = UnityEngine.InputSystem.EnhancedTouch;
 
 public class PlayerController : MonoBehaviour
 {
@@ -26,6 +28,7 @@ public class PlayerController : MonoBehaviour
     [Header("Player Abilities")]
     [SerializeField] private float speed;
     [SerializeField] private float enemyDetectRange;
+    [SerializeField] private float spawnPointRotationRange;
 
     [Header("Shoot")]
     [SerializeField] private GameObject bulletPrefab;
@@ -45,6 +48,8 @@ public class PlayerController : MonoBehaviour
 
     private Vector2 moveDir;
     private Vector2 worldMousePosition;
+    private bool hasRotationInput;
+    private readonly HashSet<int> joystickTouchIds = new HashSet<int>();
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     private void Awake()
@@ -53,25 +58,9 @@ public class PlayerController : MonoBehaviour
         {
             instance = this;
         }
-        inputSystem = new InputSystem_Actions();
+
         rb = GetComponent<Rigidbody2D>();
     }
-
-    private void OnEnable()
-    {
-        inputSystem.Enable();
-        //inputSystem.Player.Attack.performed += Attack_performed;
-    }
-
-    //private void Attack_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
-    //{
-    //    GameObject bullet = Instantiate(bulletPrefab, spawnPoint.position, spawnPoint.rotation);
-    //    bullet.GetComponent<BulletScript>().ShootBullet(bulletSpeed);
-
-    //    SoundManager.instance.PlaySound(0);
-
-    //    Destroy(bullet, 3f);
-    //}
 
     private void ShootBullet()
     {
@@ -89,11 +78,6 @@ public class PlayerController : MonoBehaviour
 
             currentTimer = reloadTimer;
         }
-    }
-
-    private void OnDisable()
-    {
-        inputSystem.Disable();
     }
     void Start()
     {
@@ -117,13 +101,86 @@ public class PlayerController : MonoBehaviour
     {
         //moveDir = inputSystem.Player.Move.ReadValue<Vector2>();
 
+        // Movement Input
         moveDir.x = movementJoystick.GetAxis("Horizontal");
         moveDir.y = movementJoystick.GetAxis("Vertical");
-
         moveDir.Normalize();
 
-        Vector2 mousePosition = inputSystem.UI.Point.ReadValue<Vector2>();
-        worldMousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+        // Rotation
+        HandleRotation();
+
+        //Vector2 mousePosition = inputSystem.UI.Point.ReadValue<Vector2>();
+        //worldMousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+    }
+
+    private void HandleRotation()
+    {
+        foreach (var touch in MyTouch.Touch.activeTouches)
+        {
+            hasRotationInput = false;
+
+            int fingerId = touch.finger.index;
+
+            // =========================================================
+            // 1. NEW TOUCH
+            // =========================================================
+            if (touch.phase == UnityEngine.InputSystem.TouchPhase.Began)
+            {
+                // If the touch started in the joystick's interaction area,
+                // permanently classify this finger as a joystick finger.
+                if (IsTouchOnJoystick(touch.screenPosition))
+                {
+                    joystickTouchIds.Add(fingerId);
+                }
+            }
+
+            // =========================================================
+            // 2. TOUCH RELEASE
+            // =========================================================
+            if (touch.phase == UnityEngine.InputSystem.TouchPhase.Ended ||
+                touch.phase == UnityEngine.InputSystem.TouchPhase.Canceled)
+            {
+                // Remove the finger BEFORE checking whether it is a
+                // joystick finger.
+                joystickTouchIds.Remove(fingerId);
+
+                continue;
+            }
+
+            // =========================================================
+            // 3. IGNORE JOYSTICK FINGER
+            // =========================================================
+            if (joystickTouchIds.Contains(fingerId))
+            {
+                continue;
+            }
+
+            // =========================================================
+            // 4. THIS IS A ROTATION TOUCH
+            // =========================================================
+            if (touch.phase == UnityEngine.InputSystem.TouchPhase.Began ||
+                touch.phase == UnityEngine.InputSystem.TouchPhase.Moved ||
+                touch.phase == UnityEngine.InputSystem.TouchPhase.Stationary)
+            {
+                Vector2 screenPosition = touch.screenPosition;
+
+                float distanceFromCamera =
+                    Mathf.Abs(
+                        Camera.main.transform.position.z -
+                        transform.position.z
+                    );
+
+                worldMousePosition = Camera.main.ScreenToWorldPoint(
+                    new Vector3(
+                        screenPosition.x,
+                        screenPosition.y,
+                        distanceFromCamera
+                    )
+                );
+
+                hasRotationInput = true;
+            }
+        }
     }
 
     private void RestrictPlayerPosition()
@@ -138,28 +195,40 @@ public class PlayerController : MonoBehaviour
     {
         rb.linearVelocity = moveDir * speed;
 
+        // Don't change the rotation unless player touched outside Joystick
+        if (!hasRotationInput)
+            return;
+
         Vector2 lookDir = worldMousePosition - rb.position;
 
         Vector3 worldMousePosition_3dPosition = new Vector3(worldMousePosition.x, worldMousePosition.y, 0);
 
         Vector2 spawnPointLookDir = worldMousePosition_3dPosition - spawnPoint.transform.position;
-        spawnPointLookDir.Normalize();
+        Vector2 spawnPointLookDirNormalized = spawnPointLookDir.normalized;
         
         //Vector2 lookDir = new Vector2(rotationJoystick.GetAxis("Horizontal"), rotationJoystick.GetAxis("Vertical"));
         Vector2 lookDirNormalized = lookDir.normalized;
 
-        //if(lookDir.magnitude > 0.8f)
-        //{
-        //    shootInputMagnitude = lookDir.magnitude;
-        //    ShootBullet();
-        //}
-        //if(lookDir.sqrMagnitude > 0.01)
-        //{
+        // Player Rotation
+        if (lookDir.sqrMagnitude > 0.01f)
+        {
             float angle = Mathf.Atan2(lookDirNormalized.y, lookDirNormalized.x) * Mathf.Rad2Deg - 90f;
-            float spawnPointRotAngle = Mathf.Atan2(spawnPointLookDir.y, spawnPointLookDir.x) * Mathf.Rad2Deg - 90f;    
-            spawnPoint.transform.eulerAngles = new Vector3(0, 0, spawnPointRotAngle);
             rb.rotation = angle;
-        //}
+        }
+
+        //SpawnPoint Rotation
+        if (Vector3.Distance(worldMousePosition_3dPosition, transform.position) > spawnPointRotationRange)
+        {
+            if(spawnPointLookDir.sqrMagnitude > 0.01f)
+            {
+                float spawnPointRotAngle = Mathf.Atan2(spawnPointLookDirNormalized.y, spawnPointLookDirNormalized.x) * Mathf.Rad2Deg - 90f;
+                spawnPoint.transform.eulerAngles = new Vector3(0, 0, spawnPointRotAngle);
+            }
+        }
+        else
+        {
+            spawnPoint.transform.localEulerAngles = new Vector3(0, 0, 0);
+        }
     }
 
     IEnumerator DestroyBullet(GameObject bullet, float destroyDelay)
@@ -187,6 +256,44 @@ public class PlayerController : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, enemyDetectRange);
+        Gizmos.DrawWireSphere(transform.position, spawnPointRotationRange);
+    }
+
+    public void ResetPlayerInput()
+    {
+        hasRotationInput = false;
+        worldMousePosition = rb.position;
+
+        joystickTouchIds.Clear();
+
+        rb.rotation = 0f;
+        spawnPoint.localEulerAngles = Vector3.zero;
+    }
+
+    private bool IsTouchOnJoystick(Vector2 screenPosition)
+    {
+        // ---------------------------------------------------------
+        // If Terresquall Snap To Touch is enabled,
+        // use the joystick's actual interaction boundaries.
+        // ---------------------------------------------------------
+        Rect snapBounds = movementJoystick.GetBounds();
+
+        if (snapBounds.width > 0f && snapBounds.height > 0f)
+        {
+            return snapBounds.Contains(screenPosition);
+        }
+
+        // ---------------------------------------------------------
+        // Normal fixed joystick:
+        // use the visible joystick RectTransform.
+        // ---------------------------------------------------------
+        RectTransform joystickRect =
+            movementJoystick.GetComponent<RectTransform>();
+
+        return RectTransformUtility.RectangleContainsScreenPoint(
+            joystickRect,
+            screenPosition,
+            null
+        );
     }
 }

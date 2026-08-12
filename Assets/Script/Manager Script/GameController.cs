@@ -37,6 +37,9 @@ public class GameController : MonoBehaviour
     public List<GameObject> playerBulletList = new List<GameObject>();
     public List<GameObject> enemyBulletList  = new List<GameObject>();
 
+    [Header("Health Kit")]
+    public List<GameObject> healthKitList = new List<GameObject>();
+
     void Awake()
     {
         if(instance == null)
@@ -103,7 +106,13 @@ public class GameController : MonoBehaviour
     void Update()
     {
         //TESTING FUNCTIONALITY
-        #region Testing
+
+        TestingBooleans();       
+    }
+
+    #region Testing
+    private void TestingBooleans()
+    {
         if (startGame)
         {
             StartGame();
@@ -133,17 +142,17 @@ public class GameController : MonoBehaviour
             PlayVlayBridge.ReportScore(123);
             reportScore = false;
         }
-        #endregion Testing
     }
+    #endregion Testing
 
     public void OnPlayerDied()
     {
         if (gameOver)
         {
             player.SetActive(false);
-            Debug.Log("Mar gya hu");
 
             DestroyBullet();
+            DestroyHealthKit();
 
             PlayVlayBridge.GameOver(playerScore);
             playGame = false;
@@ -186,6 +195,9 @@ public class GameController : MonoBehaviour
         player.SetActive(true);
         player.transform.position = playerSpawnPoint.position;
 
+        //Reseting player input
+        PlayerController.instance.ResetPlayerInput();
+
         GameplayUIManager.instance.ToggleGameUIScreen(true);
         GameplayUIManager.instance.SetScoreCountUI();
         PlayerHealth.instance.currentHealth = PlayerHealth.instance.totalHealth;
@@ -219,6 +231,18 @@ public class GameController : MonoBehaviour
                 Destroy(bullet);
             }
             enemyBulletList.Clear();
+        }
+    }
+
+    private void DestroyHealthKit()
+    {
+        if(healthKitList.Count > 0)
+        {
+            foreach(GameObject healthkit in healthKitList)
+            {
+                Destroy(healthkit);
+            }
+            healthKitList.Clear();
         }
     }
 
