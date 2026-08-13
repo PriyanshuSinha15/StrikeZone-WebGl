@@ -24,7 +24,11 @@ public class GameController : MonoBehaviour
 
     [Header("Level References")]
     public int currentLevel;
-    public int enemiesLeft;
+
+    [Header("Level SO")]
+    public Level_SO level1_SO;
+    public Level_SO level2_SO;
+    public Level_SO level3_SO;
 
     [Header("Player References")]
     public GameObject player;
@@ -79,22 +83,6 @@ public class GameController : MonoBehaviour
         StartGame();
     }
 
-    //Not Working Correctly
-    //private void OnEnable()
-    //{
-    //    PlayerHealth.instance.onPlayerDied += Player_onPlayerDied;
-    //}
-
-    //private void OnDisable()
-    //{
-    //    PlayerHealth.instance.onPlayerDied -= Player_onPlayerDied;
-    //}
-
-    //private void Player_onPlayerDied(object sender, System.EventArgs e)
-    //{
-    //    Time.timeScale = 0f;
-    //}
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -107,7 +95,9 @@ public class GameController : MonoBehaviour
     {
         //TESTING FUNCTIONALITY
 
-        TestingBooleans();       
+        TestingBooleans();
+
+        SetCurrentLevelProperties();
     }
 
     #region Testing
@@ -203,12 +193,16 @@ public class GameController : MonoBehaviour
         PlayerHealth.instance.currentHealth = PlayerHealth.instance.totalHealth;
 
         //Testing Enemies Count
-        EnemySpawner.instance.enemiesLeftCount = EnemySpawner.instance.totalEnemies;
+        EnemySpawner.instance.enemiesLeftCount = level1_SO.enemyCount;
         EnemySpawner.instance.enemySpawnedCount = 0;
         GameplayUIManager.instance.SetEnemiesLeftCountUI();
 
         GameplayUIManager.instance.SetPlayerHealthUI(PlayerHealth.instance.GetPlayerHealthRatio());
         EnemySpawner.instance.totalTime = 0f;
+
+        //Reset Level
+        currentLevel = 1;
+        GameplayUIManager.instance.SetCurrentLevelUI();
 
         PlayVlayBridge.ReportScore(playerScore);
     }
@@ -246,9 +240,51 @@ public class GameController : MonoBehaviour
         }
     }
 
-    void GetCurrentLevelEnemies()
+    private void SetCurrentLevelProperties()
     {
+        switch (currentLevel)
+        {
+            case 1:
+                EnemySpawner.instance.totalEnemies = level1_SO.enemyCount;
+                EnemySpawner.instance.enemyPrefab = level1_SO.enemyPrefab;
 
+                if(EnemySpawner.instance.enemiesLeftCount == 0)
+                {
+                    EnemySpawner.instance.enemySpawnedCount = 0;
+                    currentLevel = 2;
+                    EnemySpawner.instance.enemiesLeftCount = level2_SO.enemyCount;
+                    GameplayUIManager.instance.SetCurrentLevelUI();
+                }
+                break;
+            case 2:
+                EnemySpawner.instance.totalEnemies = level2_SO.enemyCount;
+                EnemySpawner.instance.enemyPrefab = level2_SO.enemyPrefab;
+
+                if (EnemySpawner.instance.enemiesLeftCount == 0)
+                {
+                    EnemySpawner.instance.enemySpawnedCount = 0;
+                    currentLevel = 3;
+                    EnemySpawner.instance.enemiesLeftCount = level3_SO.enemyCount;
+                    GameplayUIManager.instance.SetCurrentLevelUI();
+                }
+                break;
+
+            case 3:
+                EnemySpawner.instance.totalEnemies = level3_SO.enemyCount;
+                EnemySpawner.instance.enemyPrefab = level3_SO.enemyPrefab;
+
+                if (EnemySpawner.instance.enemiesLeftCount == 0)
+                {
+                    
+
+                }
+                break;
+
+            default:
+                EnemySpawner.instance.totalEnemies = level1_SO.enemyCount;
+                EnemySpawner.instance.enemyPrefab = level1_SO.enemyPrefab;
+                break;
+        }
     }
 
 }

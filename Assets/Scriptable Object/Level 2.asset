@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f2f4352816179b42953629db5105635, type: 3}
   m_Name: Level 2
   m_EditorClassIdentifier: Assembly-CSharp::Level_SO
+  enemyPrefab: {fileID: 6057371738527766088, guid: a34079b60fd5bf84f8f22fb8ce2925de, type: 3}
   level: 2
   enemyCount: 30
-  enemyDamage: 8
-  enemySpeed: 6
+  spawnTime: 3

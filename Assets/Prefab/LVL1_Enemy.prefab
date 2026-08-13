@@ -227,7 +227,7 @@ GameObject:
   - component: {fileID: 6145735514924199627}
   - component: {fileID: 5385253519014361261}
   m_Layer: 6
-  m_Name: Enemy
+  m_Name: LVL1_Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -292,8 +292,8 @@ MonoBehaviour:
   state: 0
   explosionPrefab: {fileID: 646446087495431482, guid: 5b5fecd7683127842b67f0a2fd91fbd9, type: 3}
   enemySpeed: 5
-  attackDistance: 4
-  reloadTimer: 1.5
+  attackDistance: 3
+  reloadTimer: 3
   bulletPrefab: {fileID: 4978135942940375626, guid: 06e90bfc5f7e88947a69eec985e665aa, type: 3}
   spawnPoint: {fileID: 9112442242993056714}
   bulletSpeed: 15

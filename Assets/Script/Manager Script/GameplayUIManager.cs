@@ -22,6 +22,7 @@ public class GameplayUIManager : MonoBehaviour
     [SerializeField] private Image playerHealth;
     [SerializeField] private TMP_Text scoreText;
     [SerializeField] private TMP_Text enemiesLeftCount;
+    [SerializeField] private TMP_Text currentLevelText;
 
     [Header("HealthBar")]
     [SerializeField] private Gradient healthBarColor;
@@ -76,6 +77,11 @@ public class GameplayUIManager : MonoBehaviour
     {
         enemiesLeftCount.text = "Enemies Left : " +  EnemySpawner.instance.enemiesLeftCount;
     }
+
+    public void SetCurrentLevelUI()
+    {
+        currentLevelText.text = "PHASE " + GameController.instance.currentLevel;
+    } 
 
     public void ToggleGameUIScreen(bool mode)
     {

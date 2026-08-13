@@ -7,7 +7,7 @@ public class EnemySpawner : MonoBehaviour
     public static EnemySpawner instance;
 
     [Header("Enemy")]
-    [SerializeField] private GameObject enemyPrefab;
+    public GameObject enemyPrefab;
     [SerializeField] private List<GameObject> enemyList = new List<GameObject>();
     public int enemySpawnedCount;
     public int enemiesLeftCount;
@@ -66,26 +66,21 @@ public class EnemySpawner : MonoBehaviour
 
     void SetSpawnTime()
     {
-        totalTime += Time.deltaTime;
-
-       
-        //if(totalTime <= 15)
-        //{
-        //    spawnTime = 4f;
-        //}
-        //else if(totalTime > 15 && totalTime < 50)
-        //{
-        //    spawnTime = 3f;
-        //}
-        //else if(totalTime > 50 && totalTime < 90)
-        //{
-        //    spawnTime = 2f;
-        //}
-        //else
-        //{
-        //    spawnTime = 1.5f;
-        //}
-
+        switch (GameController.instance.currentLevel)
+        {
+            case 1:
+                spawnTime = GameController.instance.level1_SO.spawnTime;
+                break;
+            case 2:
+                spawnTime = GameController.instance.level2_SO.spawnTime;
+                break;
+            case 3:
+                spawnTime = GameController.instance.level3_SO.spawnTime;
+                break;
+            default:
+                spawnTime = GameController.instance.level1_SO.spawnTime;
+                break;
+        }
     }
 
     public void DestroyAllEnemies()
