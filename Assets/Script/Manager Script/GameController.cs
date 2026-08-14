@@ -37,12 +37,11 @@ public class GameController : MonoBehaviour
     [Header("HealthKit")]
     public GameObject healthKit;
 
-    [Header("Bullet References")]
+    [Header("List References")]
     public List<GameObject> playerBulletList = new List<GameObject>();
     public List<GameObject> enemyBulletList  = new List<GameObject>();
-
-    [Header("Health Kit")]
     public List<GameObject> healthKitList = new List<GameObject>();
+    public List<GameObject> explosionPrefabList = new List<GameObject>();
 
     void Awake()
     {
@@ -143,6 +142,7 @@ public class GameController : MonoBehaviour
 
             DestroyBullet();
             DestroyHealthKit();
+            DestroyExplosionPrefabs();
 
             PlayVlayBridge.GameOver(playerScore);
             playGame = false;
@@ -171,6 +171,8 @@ public class GameController : MonoBehaviour
     {
         Time.timeScale = 1;
         DestroyBullet();
+        DestroyHealthKit();
+        DestroyExplosionPrefabs();
         EnemySpawner.instance.DestroyAllEnemies();
         ResetGame();
     }
@@ -194,6 +196,7 @@ public class GameController : MonoBehaviour
 
         //Testing Enemies Count
         EnemySpawner.instance.enemiesLeftCount = level1_SO.enemyCount;
+        EnemySpawner.instance.enemyPrefab = level1_SO.enemyPrefab;
         EnemySpawner.instance.enemySpawnedCount = 0;
         GameplayUIManager.instance.SetEnemiesLeftCountUI();
 
@@ -240,6 +243,18 @@ public class GameController : MonoBehaviour
         }
     }
 
+    private void DestroyExplosionPrefabs()
+    {
+        if(explosionPrefabList.Count > 0)
+        {
+            foreach(GameObject explosionPrefab in explosionPrefabList)
+            {
+                Destroy(explosionPrefab);
+            }
+            explosionPrefabList.Clear();
+        }
+    }
+
     private void SetCurrentLevelProperties()
     {
         switch (currentLevel)
@@ -254,6 +269,7 @@ public class GameController : MonoBehaviour
                     currentLevel = 2;
                     EnemySpawner.instance.enemiesLeftCount = level2_SO.enemyCount;
                     GameplayUIManager.instance.SetCurrentLevelUI();
+                    GameplayUIManager.instance.SetEnemiesLeftCountUI();
                 }
                 break;
             case 2:
@@ -266,6 +282,7 @@ public class GameController : MonoBehaviour
                     currentLevel = 3;
                     EnemySpawner.instance.enemiesLeftCount = level3_SO.enemyCount;
                     GameplayUIManager.instance.SetCurrentLevelUI();
+                    GameplayUIManager.instance.SetEnemiesLeftCountUI();
                 }
                 break;
 
@@ -275,8 +292,7 @@ public class GameController : MonoBehaviour
 
                 if (EnemySpawner.instance.enemiesLeftCount == 0)
                 {
-                    
-
+                    RestartGame();
                 }
                 break;
 

@@ -101,6 +101,7 @@ public class EnemyController : MonoBehaviour
             GameplayUIManager.instance.SetScoreCountUI();
             SoundManager.instance.PlaySound(1);
             GameObject explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+            GameController.instance.explosionPrefabList.Add(explosion);
             Destroy(explosion, 1.2f);
 
             GameController.instance.playerBulletList.Remove(collision.gameObject);

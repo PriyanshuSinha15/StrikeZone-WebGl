@@ -15,4 +15,4 @@ MonoBehaviour:
   enemyPrefab: {fileID: 6057371738527766088, guid: caf515ceffdd8344ea54a3cfb480d0d3, type: 3}
   level: 3
   enemyCount: 50
-  spawnTime: 2
+  spawnTime: 1.7
