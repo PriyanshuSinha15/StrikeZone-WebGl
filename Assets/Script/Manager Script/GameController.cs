@@ -194,6 +194,9 @@ public class GameController : MonoBehaviour
         GameplayUIManager.instance.SetScoreCountUI();
         PlayerHealth.instance.currentHealth = PlayerHealth.instance.totalHealth;
 
+        //Resetting Player Timer
+        PlayerController.instance.ResetTimer();
+
         //Testing Enemies Count
         EnemySpawner.instance.enemiesLeftCount = level1_SO.enemyCount;
         EnemySpawner.instance.enemyPrefab = level1_SO.enemyPrefab;

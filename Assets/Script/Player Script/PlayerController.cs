@@ -39,6 +39,9 @@ public class PlayerController : MonoBehaviour
 
     [Header("Enemy")]
     [SerializeField] private LayerMask enemyLayer;
+    [SerializeField] private float enemyDetectInterval;
+    private bool enemyDetected;
+    private float enemyDetectTimer;
 
     [Header("Move Area")]
     [SerializeField] private float xMinRange;
@@ -50,6 +53,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 worldMousePosition;
     private bool hasRotationInput;
     private readonly HashSet<int> joystickTouchIds = new HashSet<int>();
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     private void Awake()
@@ -66,7 +70,7 @@ public class PlayerController : MonoBehaviour
     {
         currentTimer -= Time.deltaTime;
 
-        if(currentTimer <= 0)
+        if(currentTimer <= 0 && enemyDetected)
         {
             GameObject bullet = Instantiate(bulletPrefab, spawnPoint.position, spawnPoint.rotation);
             bullet.GetComponent<BulletScript>().ShootBullet(bulletSpeed);
@@ -82,6 +86,8 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         //shootButton.onClick.AddListener(() => ShootBullet());
+        enemyDetectTimer = 0;
+        currentTimer = 0;
     }
 
     // Update is called once per frame
@@ -93,8 +99,16 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        DetectEnemies();
+        enemyDetectTimer -= Time.fixedDeltaTime;
+
+        if(enemyDetectTimer <= 0)
+        {
+            DetectEnemies();
+            enemyDetectTimer = enemyDetectInterval;
+        }
         MoveAndRotatePlayer();
+
+        ShootBullet();
     }
 
     private void GameInput()
@@ -244,13 +258,9 @@ public class PlayerController : MonoBehaviour
 
     void DetectEnemies()
     {
-        Collider2D[] enemies = Physics2D.OverlapCircleAll(transform.position, enemyDetectRange, enemyLayer);
+        Collider2D enemy = Physics2D.OverlapCircle(transform.position, enemyDetectRange, enemyLayer);
 
-        if(enemies.Length > 0 )
-        {
-            //Debug.Log("Detect Enemies");
-            ShootBullet();
-        }
+        enemyDetected = enemy != null;
     }
 
     private void OnDrawGizmos()
@@ -295,5 +305,11 @@ public class PlayerController : MonoBehaviour
             screenPosition,
             null
         );
+    }
+
+    public void ResetTimer()
+    {
+        currentTimer = 0;
+        enemyDetectTimer = 0;
     }
 }
