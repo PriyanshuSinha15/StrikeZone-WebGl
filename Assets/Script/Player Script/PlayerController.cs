@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float spawnPointRotationRange;
 
     [Header("Shoot")]
-    [SerializeField] private GameObject bulletPrefab;
+    //[SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private float bulletSpeed;
     [SerializeField] private float reloadTimer;
@@ -72,13 +72,12 @@ public class PlayerController : MonoBehaviour
 
         if(currentTimer <= 0 && enemyDetected)
         {
-            GameObject bullet = Instantiate(bulletPrefab, spawnPoint.position, spawnPoint.rotation);
+            GameObject bullet = BulletPool.instance.GetBullet(spawnPoint.position, spawnPoint.rotation);
+                
             bullet.GetComponent<BulletScript>().ShootBullet(bulletSpeed);
 
             SoundManager.instance.PlaySound(0);
             GameController.instance.playerBulletList.Add(bullet);
-
-            StartCoroutine(DestroyBullet(bullet, 3f));
 
             currentTimer = reloadTimer;
         }
@@ -245,16 +244,16 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    IEnumerator DestroyBullet(GameObject bullet, float destroyDelay)
-    {
-        yield return new WaitForSeconds(destroyDelay);
+    //IEnumerator DestroyBullet(GameObject bullet, float destroyDelay)
+    //{
+    //    yield return new WaitForSeconds(destroyDelay);
 
-        if(bullet != null)
-        {
-            GameController.instance.playerBulletList.Remove(bullet);
-            Destroy(bullet);
-        }
-    }
+    //    if(bullet != null)
+    //    {
+    //        GameController.instance.playerBulletList.Remove(bullet);
+    //        Destroy(bullet);
+    //    }
+    //}
 
     void DetectEnemies()
     {

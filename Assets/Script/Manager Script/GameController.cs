@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -140,6 +139,7 @@ public class GameController : MonoBehaviour
         {
             player.SetActive(false);
 
+            ResetPlayerBullets();
             DestroyBullet();
             DestroyHealthKit();
             DestroyExplosionPrefabs();
@@ -170,6 +170,7 @@ public class GameController : MonoBehaviour
     public void RestartGame()
     {
         Time.timeScale = 1;
+        ResetPlayerBullets();
         DestroyBullet();
         DestroyHealthKit();
         DestroyExplosionPrefabs();
@@ -213,17 +214,26 @@ public class GameController : MonoBehaviour
         PlayVlayBridge.ReportScore(playerScore);
     }
 
-    private void DestroyBullet()
+    private void ResetPlayerBullets()
     {
-        if (playerBulletList.Count > 0)
+        if (playerBulletList.Count == 0)
+            return;
+
+        for(int i = playerBulletList.Count - 1; i >= 0; i--)
         {
-            foreach (GameObject bullet in playerBulletList)
+            GameObject bullet = playerBulletList[i];
+
+            if(bullet != null)
             {
-                Destroy(bullet);
+                BulletPool.instance.ReturnBullet(bullet);
             }
-            playerBulletList.Clear();
         }
 
+        playerBulletList.Clear();
+    }
+
+    private void DestroyBullet()
+    {
         if (enemyBulletList.Count > 0)
         {
             foreach (GameObject bullet in enemyBulletList)
