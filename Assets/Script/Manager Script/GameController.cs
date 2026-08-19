@@ -140,7 +140,7 @@ public class GameController : MonoBehaviour
             player.SetActive(false);
 
             ResetPlayerBullets();
-            DestroyBullet();
+            ResetEnemyBullet();
             DestroyHealthKit();
             DestroyExplosionPrefabs();
 
@@ -171,7 +171,7 @@ public class GameController : MonoBehaviour
     {
         Time.timeScale = 1;
         ResetPlayerBullets();
-        DestroyBullet();
+        ResetEnemyBullet();
         DestroyHealthKit();
         DestroyExplosionPrefabs();
         EnemySpawner.instance.DestroyAllEnemies();
@@ -232,16 +232,23 @@ public class GameController : MonoBehaviour
         playerBulletList.Clear();
     }
 
-    private void DestroyBullet()
+    private void ResetEnemyBullet()
     {
-        if (enemyBulletList.Count > 0)
+        if (enemyBulletList.Count == 0)
+            return;
+
+        for(int i = enemyBulletList.Count - 1; i>=0; i--)
         {
-            foreach (GameObject bullet in enemyBulletList)
+            GameObject bullet = enemyBulletList[i];
+
+            if(bullet != null)
             {
-                Destroy(bullet);
+                EnemyBulletPool.instance.ReturnBullet(bullet);
             }
-            enemyBulletList.Clear();
         }
+
+        enemyBulletList.Clear();
+        
     }
 
     private void DestroyHealthKit()

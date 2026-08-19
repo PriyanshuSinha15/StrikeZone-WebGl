@@ -79,11 +79,11 @@ public class EnemyController : MonoBehaviour
         if(currentTimer <= 0)
         {
 
-            GameObject bullet = Instantiate(bulletPrefab, spawnPoint.position, spawnPoint.rotation);
+            GameObject bullet = EnemyBulletPool.instance.GetBullet(spawnPoint.position, spawnPoint.rotation);
             bullet.GetComponent<EnemyBullet>().ShootBullet(bulletSpeed);
             SoundManager.instance.PlaySound(2);
             GameController.instance.enemyBulletList.Add(bullet);
-            StartCoroutine(DestroyBullet(bullet, 3f));
+  
             currentTimer = reloadTimer;
         }
     }
@@ -138,16 +138,5 @@ public class EnemyController : MonoBehaviour
         Vector2 lookDir = player.position - spawnPoint.position;
         float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;
         return angle; 
-    }
-
-    IEnumerator DestroyBullet(GameObject bullet, float destroyDelay)
-    {
-        yield return new WaitForSeconds(destroyDelay);
-
-        if(bullet != null)
-        {
-            GameController.instance.enemyBulletList.Remove(bullet);
-            Destroy(bullet);
-        }
     }
 }

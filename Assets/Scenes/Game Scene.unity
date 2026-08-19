@@ -1654,7 +1654,7 @@ MonoBehaviour:
   startButton: {fileID: 338432628}
   gameUI: {fileID: 731664629}
   goalUI: {fileID: 1703802858}
-  test: 0
+  test: 1
   startGameUI: {fileID: 863748048}
   retryGameUI: {fileID: 299422489}
   playerHealth: {fileID: 1631226181}
@@ -3672,6 +3672,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1653584919}
+  - component: {fileID: 1653584920}
   m_Layer: 0
   m_Name: Enemy Bullet Pool
   m_TagString: Untagged
@@ -3694,6 +3695,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 89518533}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1653584920
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1653584918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfb85a5f6d4e22a43ab48795b62ea571, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyBulletPool
+  enemyBullet: {fileID: 4978135942940375626, guid: 06e90bfc5f7e88947a69eec985e665aa, type: 3}
+  initialPoolSize: 60
 --- !u!1 &1667128737
 GameObject:
   m_ObjectHideFlags: 0
@@ -3830,7 +3845,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BulletPool
   bulletPrefab: {fileID: 4978135942940375626, guid: 41a3ccaf8c8268040a58375dbe17d123, type: 3}
-  enemyBulletPrefab: {fileID: 0}
   initialPoolSize: 30
 --- !u!1 &1703802858
 GameObject:
