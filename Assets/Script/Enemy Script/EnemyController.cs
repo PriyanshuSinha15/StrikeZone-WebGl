@@ -105,7 +105,7 @@ public class EnemyController : MonoBehaviour
             Destroy(explosion, 1.2f);
 
             GameController.instance.playerBulletList.Remove(collision.gameObject);
-            Destroy(collision.gameObject);
+            BulletPool.instance.ReturnBullet(collision.gameObject);
 
             //Enemies Left Count Test
             EnemySpawner.instance.enemiesLeftCount--;

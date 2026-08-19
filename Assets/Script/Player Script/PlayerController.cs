@@ -243,18 +243,7 @@ public class PlayerController : MonoBehaviour
             spawnPoint.transform.localEulerAngles = new Vector3(0, 0, 0);
         }
     }
-
-    //IEnumerator DestroyBullet(GameObject bullet, float destroyDelay)
-    //{
-    //    yield return new WaitForSeconds(destroyDelay);
-
-    //    if(bullet != null)
-    //    {
-    //        GameController.instance.playerBulletList.Remove(bullet);
-    //        Destroy(bullet);
-    //    }
-    //}
-
+    
     void DetectEnemies()
     {
         Collider2D enemy = Physics2D.OverlapCircle(transform.position, enemyDetectRange, enemyLayer);
