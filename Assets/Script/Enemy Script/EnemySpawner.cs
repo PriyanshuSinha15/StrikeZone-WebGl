@@ -8,7 +8,7 @@ public class EnemySpawner : MonoBehaviour
 
     [Header("Enemy")]
     public GameObject enemyPrefab;
-    [SerializeField] private List<GameObject> enemyList = new List<GameObject>();
+    public List<GameObject> enemyList = new List<GameObject>();
     public int enemySpawnedCount;
     public int enemiesLeftCount;
     public int totalEnemies;

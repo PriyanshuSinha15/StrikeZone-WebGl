@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6357278438167238542}
   - component: {fileID: 7739968917721045089}
   - component: {fileID: 7874158717317415587}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: HealthKit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -131,7 +131,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8740589929110376619}
   - component: {fileID: 2190393110512716820}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Health Kit Gfx
   m_TagString: Untagged
   m_Icon: {fileID: 0}

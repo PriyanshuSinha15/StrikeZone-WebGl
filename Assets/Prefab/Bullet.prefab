@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4032708836311906368}
   - component: {fileID: 4267928389620449879}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BulletGFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -103,7 +103,7 @@ GameObject:
   - component: {fileID: 1355620880380233255}
   - component: {fileID: 1650724019744691320}
   - component: {fileID: 4993424876123791447}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}

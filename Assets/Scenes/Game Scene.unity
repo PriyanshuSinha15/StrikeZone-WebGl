@@ -4245,14 +4245,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1731366832452445707, guid: 7a73b871c6103f64790206cd9ffad1eb, type: 3}
-      propertyPath: speed
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 1731366832452445707, guid: 7a73b871c6103f64790206cd9ffad1eb, type: 3}
-      propertyPath: reloadTimer
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 1731366832452445707, guid: 7a73b871c6103f64790206cd9ffad1eb, type: 3}
       propertyPath: shootButton
       value: 
       objectReference: {fileID: 1503975964}
@@ -4260,25 +4252,9 @@ PrefabInstance:
       propertyPath: movementJoystick
       value: 
       objectReference: {fileID: 2088914238}
-    - target: {fileID: 1731366832452445707, guid: 7a73b871c6103f64790206cd9ffad1eb, type: 3}
-      propertyPath: enemyDetectInterval
-      value: 0.05
-      objectReference: {fileID: 0}
-    - target: {fileID: 1731366832452445707, guid: 7a73b871c6103f64790206cd9ffad1eb, type: 3}
-      propertyPath: spawnPointRotationRange
-      value: 1.55
-      objectReference: {fileID: 0}
-    - target: {fileID: 4545256349698435727, guid: 7a73b871c6103f64790206cd9ffad1eb, type: 3}
-      propertyPath: totalHealth
-      value: 100
-      objectReference: {fileID: 0}
     - target: {fileID: 4598706984153253603, guid: 7a73b871c6103f64790206cd9ffad1eb, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 4598706984153253603, guid: 7a73b871c6103f64790206cd9ffad1eb, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5523601021650812577, guid: 7a73b871c6103f64790206cd9ffad1eb, type: 3}
       propertyPath: m_LocalPosition.x

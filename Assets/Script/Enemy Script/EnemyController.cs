@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
+
 
 public enum EnemyState
 {
@@ -10,7 +12,6 @@ public enum EnemyState
 public class EnemyController : MonoBehaviour
 {
     public EnemyState state;
-
     private Transform player;
     private Rigidbody2D rb;
 
@@ -21,11 +22,14 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private float enemySpeed;
     [SerializeField] private float attackDistance;
     [SerializeField] private float reloadTimer;
+    [SerializeField] private float decisionTimer;
 
     [Header("Shoot")]
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private float bulletSpeed;
+
+    private float currentDecisionTimer;
     private float currentTimer;
     private Vector2 lookDir;
     private float lookAngle;
@@ -43,7 +47,18 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Vector3.Distance(transform.position, player.position) >= attackDistance)
+        currentDecisionTimer -= Time.deltaTime;
+
+        if(currentDecisionTimer < 0)
+        {
+            UpdateEnemyState();
+            currentDecisionTimer = decisionTimer;
+        }
+    }
+
+    private void UpdateEnemyState()
+    {
+        if (Vector2.Distance(transform.position, player.position) >= attackDistance)
         {
             state = EnemyState.CHASE;
         }
@@ -51,7 +66,6 @@ public class EnemyController : MonoBehaviour
         {
             state = EnemyState.ATTACK;
         }
-
     }
 
     void FixedUpdate()
@@ -100,6 +114,8 @@ public class EnemyController : MonoBehaviour
 
             GameplayUIManager.instance.SetScoreCountUI();
             SoundManager.instance.PlaySound(1);
+
+            // Creating and Destroying Explosion 
             GameObject explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
             GameController.instance.explosionPrefabList.Add(explosion);
             Destroy(explosion, 1.2f);
@@ -116,6 +132,8 @@ public class EnemyController : MonoBehaviour
             GameController.instance.healthKitList.Add(healthKit);
             Destroy(healthKit, 20f);
 
+            // Remove enemy from Enemy List in Enemy Spawner
+            EnemySpawner.instance.enemyList.Remove(gameObject);
             Destroy(gameObject);
         }
     }

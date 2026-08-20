@@ -69,10 +69,7 @@ public class BulletScript : MonoBehaviour
 
     private void ReturnToPool()
     {
-        if(GameController.instance.playerBulletList.Contains(gameObject))
-        {
-            GameController.instance.playerBulletList.Remove(gameObject);
-        }
+        GameController.instance.playerBulletList.Remove(gameObject);
 
         BulletPool.instance.ReturnBullet(gameObject);
     }

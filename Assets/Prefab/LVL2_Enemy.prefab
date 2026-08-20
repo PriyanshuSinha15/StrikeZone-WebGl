@@ -294,6 +294,7 @@ MonoBehaviour:
   enemySpeed: 6
   attackDistance: 4
   reloadTimer: 2
+  decisionTimer: 0.1
   bulletPrefab: {fileID: 4978135942940375626, guid: 06e90bfc5f7e88947a69eec985e665aa, type: 3}
   spawnPoint: {fileID: 9112442242993056714}
   bulletSpeed: 15

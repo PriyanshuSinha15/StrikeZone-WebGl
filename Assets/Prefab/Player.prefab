@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3028716423171531637}
   - component: {fileID: 3565626572897997316}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Gfx
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -101,7 +101,7 @@ GameObject:
   m_Component:
   - component: {fileID: 534506655444788696}
   - component: {fileID: 1163099815889845584}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Gun Direction
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -195,7 +195,7 @@ GameObject:
   - component: {fileID: 1731366832452445707}
   - component: {fileID: 8269456624347558963}
   - component: {fileID: 2161598178146238480}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -248,15 +248,16 @@ MonoBehaviour:
   shootInputMagnitude: 0
   movementJoystick: {fileID: 0}
   shootButton: {fileID: 0}
-  speed: 7
+  speed: 8
   enemyDetectRange: 9.95
-  bulletPrefab: {fileID: 4978135942940375626, guid: 41a3ccaf8c8268040a58375dbe17d123, type: 3}
+  spawnPointRotationRange: 1.55
   spawnPoint: {fileID: 8387309885902264729}
   bulletSpeed: 20
   reloadTimer: 0.25
   enemyLayer:
     serializedVersion: 2
     m_Bits: 64
+  enemyDetectInterval: 0.05
   xMinRange: -24
   xMaxRange: 24
   yMinRange: -16
@@ -343,7 +344,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8387309885902264729}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: SpawnPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
