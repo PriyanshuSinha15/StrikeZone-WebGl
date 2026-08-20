@@ -16,3 +16,4 @@ MonoBehaviour:
   level: 2
   enemyCount: 30
   spawnTime: 2.5
+  playerBoostScore: 4

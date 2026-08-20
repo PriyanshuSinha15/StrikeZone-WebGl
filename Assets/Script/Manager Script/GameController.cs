@@ -16,6 +16,7 @@ public class GameController : MonoBehaviour
 
     [Header("Score")]
     public int playerScore;
+    public int playerScoreBoost;
 
     [Header("Booleans")]
     public bool gameOver;
@@ -50,7 +51,7 @@ public class GameController : MonoBehaviour
         }
         else
         {
-            Destroy(gameObject);
+               Destroy(gameObject);
         }
 
         inputSystem = new InputSystem_Actions();
@@ -142,7 +143,7 @@ public class GameController : MonoBehaviour
             ResetPlayerBullets();
             ResetEnemyBullet();
             DestroyHealthKit();
-            DestroyExplosionPrefabs();
+            ResetExplosionEffect();
 
             PlayVlayBridge.GameOver(playerScore);
             playGame = false;
@@ -173,7 +174,7 @@ public class GameController : MonoBehaviour
         ResetPlayerBullets();
         ResetEnemyBullet();
         DestroyHealthKit();
-        DestroyExplosionPrefabs();
+        ResetExplosionEffect();
         EnemySpawner.instance.DestroyAllEnemies();
         ResetGame();
     }
@@ -203,6 +204,7 @@ public class GameController : MonoBehaviour
         EnemySpawner.instance.enemyPrefab = level1_SO.enemyPrefab;
         EnemySpawner.instance.enemySpawnedCount = 0;
         GameplayUIManager.instance.SetEnemiesLeftCountUI();
+        playerScoreBoost = level1_SO.playerBoostScore;
 
         GameplayUIManager.instance.SetPlayerHealthUI(PlayerHealth.instance.GetPlayerHealthRatio());
         EnemySpawner.instance.totalTime = 0f;
@@ -263,16 +265,22 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private void DestroyExplosionPrefabs()
+    private void ResetExplosionEffect()
     {
-        if(explosionPrefabList.Count > 0)
+        if(explosionPrefabList.Count == 0) 
+            return;
+        
+        for(int i = explosionPrefabList.Count - 1; i >=0; i--)
         {
-            foreach(GameObject explosionPrefab in explosionPrefabList)
+            GameObject explosion = explosionPrefabList[i];
+
+            if(explosion != null)
             {
-                Destroy(explosionPrefab);
+                ExplosionPool.instance.ReturnExpolsion(explosion);
             }
-            explosionPrefabList.Clear();
         }
+
+        explosionPrefabList.Clear();
     }
 
     private void SetCurrentLevelProperties()
@@ -282,8 +290,9 @@ public class GameController : MonoBehaviour
             case 1:
                 EnemySpawner.instance.totalEnemies = level1_SO.enemyCount;
                 EnemySpawner.instance.enemyPrefab = level1_SO.enemyPrefab;
+                playerScoreBoost = level1_SO.playerBoostScore;
 
-                if(EnemySpawner.instance.enemiesLeftCount == 0)
+                if (EnemySpawner.instance.enemiesLeftCount == 0)
                 {
                     EnemySpawner.instance.enemySpawnedCount = 0;
                     currentLevel = 2;
@@ -295,6 +304,7 @@ public class GameController : MonoBehaviour
             case 2:
                 EnemySpawner.instance.totalEnemies = level2_SO.enemyCount;
                 EnemySpawner.instance.enemyPrefab = level2_SO.enemyPrefab;
+                playerScoreBoost = level2_SO.playerBoostScore;
 
                 if (EnemySpawner.instance.enemiesLeftCount == 0)
                 {
@@ -309,6 +319,7 @@ public class GameController : MonoBehaviour
             case 3:
                 EnemySpawner.instance.totalEnemies = level3_SO.enemyCount;
                 EnemySpawner.instance.enemyPrefab = level3_SO.enemyPrefab;
+                playerScoreBoost = level3_SO.playerBoostScore;
 
                 if (EnemySpawner.instance.enemiesLeftCount == 0)
                 {

@@ -107,7 +107,7 @@ public class EnemyController : MonoBehaviour
     {
         if (collision.gameObject.GetComponent<BulletScript>())
         {
-            GameController.instance.playerScore += 2;
+            GameController.instance.playerScore += GameController.instance.playerScoreBoost;
 
             //PlayVlay Score Report
             PlayVlayBridge.ReportScore(GameController.instance.playerScore);
@@ -115,10 +115,9 @@ public class EnemyController : MonoBehaviour
             GameplayUIManager.instance.SetScoreCountUI();
             SoundManager.instance.PlaySound(1);
 
-            // Creating and Destroying Explosion 
-            GameObject explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+            // Getting Explosion from pool 
+            GameObject explosion = ExplosionPool.instance.GetExplosion(transform.position, Quaternion.identity);
             GameController.instance.explosionPrefabList.Add(explosion);
-            Destroy(explosion, 1.2f);
 
             GameController.instance.playerBulletList.Remove(collision.gameObject);
             BulletPool.instance.ReturnBullet(collision.gameObject);

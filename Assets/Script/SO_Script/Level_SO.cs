@@ -7,4 +7,6 @@ public class Level_SO : ScriptableObject
     public int level;
     public int enemyCount;
     public float spawnTime;
+
+    public int playerBoostScore;
 }
