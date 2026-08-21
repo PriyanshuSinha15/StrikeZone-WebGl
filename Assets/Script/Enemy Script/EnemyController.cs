@@ -15,9 +15,6 @@ public class EnemyController : MonoBehaviour
     private Transform player;
     private Rigidbody2D rb;
 
-    [Header("Explosion")]
-    [SerializeField] private GameObject explosionPrefab;
-
     [Header("Enemy Abilities")]
     [SerializeField] private float enemySpeed;
     [SerializeField] private float attackDistance;
@@ -127,9 +124,8 @@ public class EnemyController : MonoBehaviour
             GameplayUIManager.instance.SetEnemiesLeftCountUI();
 
             //Health Kit Power up
-            GameObject healthKit = Instantiate(GameController.instance.healthKit, transform.position, Quaternion.identity);
+            GameObject healthKit = HealthKitPool.instance.GetHealthKit(transform.position, Quaternion.identity);
             GameController.instance.healthKitList.Add(healthKit);
-            Destroy(healthKit, 20f);
 
             // Remove enemy from Enemy List in Enemy Spawner
             EnemySpawner.instance.enemyList.Remove(gameObject);

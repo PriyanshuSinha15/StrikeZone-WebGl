@@ -34,9 +34,6 @@ public class GameController : MonoBehaviour
     public GameObject player;
     public Transform playerSpawnPoint;
 
-    [Header("HealthKit")]
-    public GameObject healthKit;
-
     [Header("List References")]
     public List<GameObject> playerBulletList = new List<GameObject>();
     public List<GameObject> enemyBulletList  = new List<GameObject>();
@@ -142,7 +139,7 @@ public class GameController : MonoBehaviour
 
             ResetPlayerBullets();
             ResetEnemyBullet();
-            DestroyHealthKit();
+            ResetHealthKit();
             ResetExplosionEffect();
 
             PlayVlayBridge.GameOver(playerScore);
@@ -173,7 +170,7 @@ public class GameController : MonoBehaviour
         Time.timeScale = 1;
         ResetPlayerBullets();
         ResetEnemyBullet();
-        DestroyHealthKit();
+        ResetHealthKit();
         ResetExplosionEffect();
         EnemySpawner.instance.DestroyAllEnemies();
         ResetGame();
@@ -253,16 +250,22 @@ public class GameController : MonoBehaviour
         
     }
 
-    private void DestroyHealthKit()
+    private void ResetHealthKit()
     {
-        if(healthKitList.Count > 0)
+        if (healthKitList.Count == 0)
+            return;
+
+        for(int i = healthKitList.Count - 1; i >= 0; i--)
         {
-            foreach(GameObject healthkit in healthKitList)
+            GameObject healthKit = healthKitList[i];
+
+            if(healthKit != null)
             {
-                Destroy(healthkit);
+                HealthKitPool.instance.ReturnHealthKit(healthKit);  
             }
-            healthKitList.Clear();
         }
+
+        healthKitList.Clear();
     }
 
     private void ResetExplosionEffect()
